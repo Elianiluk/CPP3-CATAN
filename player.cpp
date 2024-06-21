@@ -1,14 +1,12 @@
-#include <iostream>
 #include "player.hpp"
-#include "board.hpp"
-#include <string>
-#include <vector>
 
 namespace ariel
 {
-    Player::Player(std::string name) : 
-        name(name),wheat(0),ore(0),brick(0),wood(0),wool(0),settelmentsName({}),settelmentsPosition({}) ,roadsName({}),roadsPosition({}), turn(false),points(0){}
-
+    Player::Player(std::string name)
+        : name(name), wood(0), brick(0), ore(0), wheat(0), wool(0), turn(false),
+          points(0), knightCount(0), settelmentsName({}), settelmentsPosition({}),
+          roadsName({}), roadsPosition({}), cards({}) {}
+          
     void Player::placeSettelemnt(std::vector<std::string> places, std::vector<int> placesNum, Board &board)
     {
         if(turn==false){
@@ -18,10 +16,10 @@ namespace ariel
         {
             throw std::invalid_argument("You must place two settlements.");
         }
-        if (board.getTile(places[0], placesNum[0]).getOwner() != "" || board.getTile(places[1], placesNum[1]).getOwner() != "")
-        {
-            throw std::invalid_argument("One of the places is already taken.");
-        }
+        // if (board.getTile(places[0], placesNum[0]).getOwner() != "" || board.getTile(places[1], placesNum[1]).getOwner() != "")
+        // {
+        //     throw std::invalid_argument("One of the places is already taken.");
+        // }
         settelmentsName.push_back(places[0]);
         settelmentsName.push_back(places[1]);
         settelmentsPosition.push_back(placesNum[0]);
@@ -146,10 +144,10 @@ namespace ariel
         {
             throw std::invalid_argument("You must place two roads.");
         }
-        if (board.getTile(places[0], placesNum[0]).getOwner() != name || board.getTile(places[1], placesNum[1]).getOwner() != name)
-        {
-            throw std::invalid_argument("You must place the road near your settlement.");
-        }
+        // if (board.getTile(places[0], placesNum[0]).getOwner() != name || board.getTile(places[1], placesNum[1]).getOwner() != name)
+        // {
+        //     throw std::invalid_argument("You must place the road near your settlement.");
+        // }
         roadsName.push_back(places[0]);
         roadsName.push_back(places[1]);
         roadsPosition.push_back(placesNum[0]);
@@ -170,5 +168,200 @@ namespace ariel
         int dice = rand() % 6 + 1 + rand() % 6 + 1;
         //std::cout << dice << std::endl;
         return dice;
+    }
+
+    void Player::buyCard() {
+        if (turn == false) {
+            throw std::invalid_argument("It's not your turn.");
+        }
+
+        // Cost of a development card: 1 wheat, 1 ore, 1 wool
+        if (wheat < 1 || ore < 1 || wool < 1) {
+            throw std::invalid_argument("You don't have enough resources to buy a development card.");
+        }
+
+        // Randomly choose a card
+        std::string names[5] = {"Monopoly", "Road Building", "Year of Plenty", "Knight", "Victory Point"};
+        int randIndex = rand() % 5;
+        std::string cardName = names[randIndex]; // cardName = names[rand() % 5
+
+
+        // Deduct the resources
+        wheat -= 1;
+        ore -= 1;
+        wool -= 1;
+
+        // Create the card based on the cardName
+        if (cardName == "Monopoly") {
+            DevelopmentCard card(DevelopmentCard::Monopoly);
+            cards.push_back(card);
+        } else if (cardName == "Road Building") {
+            DevelopmentCard card(DevelopmentCard::RoadBuilding);
+            cards.push_back(card);
+        } else if (cardName == "Year of Plenty") {
+            DevelopmentCard card(DevelopmentCard::YearOfPlenty);
+            cards.push_back(card);
+        } else if (cardName == "Knight") {
+            if (KnightCard::getCount() >= 3) {
+                throw std::runtime_error("Cannot create more than 3 Knight Cards.");
+            }
+            KnightCard card;
+            knightCount++;
+            cards.push_back(card);
+        } else if (cardName == "Victory Poines") {
+            VictoryPointCard card;
+            cards.push_back(card);
+        } else {
+            throw std::invalid_argument("Invalid card name.");
+        }
+
+        std::cout << name << " bought a " << cardName << " card." << std::endl;
+    }
+
+    void Player::playCard(std::string cardType,std::string type,std::string type2,Player other1,Player other2) {
+        if (turn == false) {
+            throw std::invalid_argument("It's not your turn.");
+        }
+
+        if (cards.size() == 0) {
+            throw std::invalid_argument("You don't have any cards to play.");
+        }
+
+        if(cardType!="Monopoly" && cardType!="Road Building" && cardType!="Year of Plenty" && cardType!="Knight" && cardType!="Victory Point"){
+            throw std::invalid_argument("Invalid card type.");
+        }
+
+        if(cardType=="Knight" && knightCount==0){
+            throw std::invalid_argument("You don't have any Knight cards.");
+        }
+
+        if(cardType=="Monopoly"){
+            bool monopoly=false;
+            for(unsigned long i=0;i<cards.size();i++){
+                if(cards[i].getType()=="Monopoly"){
+                    monopoly=true;
+                    break;
+                }
+            }
+            if(monopoly==false){
+                throw std::invalid_argument("You don't have any Monopoly cards.");
+            }
+        }
+
+        if(cardType=="Road Building"){
+            bool roadBuilding=false;
+            for(unsigned long i=0;i<cards.size();i++){
+                if(cards[i].getType()=="Road Building"){
+                    roadBuilding=true;
+                    break;
+                }
+            }
+            if(roadBuilding==false){
+                throw std::invalid_argument("You don't have any Road Building cards.");
+            }
+        }
+
+        if(cardType=="Year of Plenty"){
+            bool yearOfPlenty=false;
+            for(unsigned long i=0;i<cards.size();i++){
+                if(cards[i].getType()=="Year of Plenty"){
+                    yearOfPlenty=true;
+                    break;
+                }
+            }
+            if(yearOfPlenty==false){
+                throw std::invalid_argument("You don't have any Year of Plenty cards.");
+            }
+        }
+
+        if(cardType=="Victory Point"){
+            bool victoryPoint=false;
+            for(unsigned long i=0;i<cards.size();i++){
+                if(cards[i].getType()=="Victory Point"){
+                    victoryPoint=true;
+                    break;
+                }
+            }
+            if(victoryPoint==false){
+                throw std::invalid_argument("You don't have any Victory Point cards.");
+            }
+        }
+
+        if(cardType=="Knight"){
+            bool knight=false;
+            for(unsigned long i=0;i<cards.size();i++){
+                if(cards[i].getType()=="Knight"){
+                    knight=true;
+                    break;
+                }
+            }
+            if(knight==false){
+                throw std::invalid_argument("You don't have any Knight cards.");
+            }
+        }
+
+        int inedx=0;
+        for(unsigned long i=0;i<cards.size();i++){
+            if(cards[i].getType()==cardType){
+                inedx=i;
+                break;
+            }
+        }
+
+        if (cardType == "Monopoly") {
+            std::cout << name << " played a Monopoly card." << std::endl;
+            if(type=="wood"){
+                wood++;
+                other1.wood--;
+                other2.wood--;
+            }
+            if(type=="ore"){
+                ore++;
+                other1.ore--;
+                other2.ore--;
+            }
+            if(type=="brick"){
+                brick++;
+                other1.brick--;
+                other2.brick--;
+            }
+            if(type=="wheat"){
+                wheat++;
+                other1.wheat--;
+                other2.wheat--;
+            }
+            if(type=="wool"){
+                wool++;
+                other1.wool--;
+                other2.wool--;
+            }
+        } else if (cardType == "Road Building") {
+            std::cout << name << " played a Road Building card." << std::endl;
+        } else if (cardType == "Year of Plenty") {
+            std::cout << name << " played a Year of Plenty card." << std::endl;
+            if(type2=="wood" || type=="wood"){
+                wood++;
+            }
+            if(type2=="ore" || type=="ore"){
+                ore++;
+            }
+            if(type2=="brick" || type=="brick"){
+                brick++;
+            }
+            if(type2=="wheat" || type=="wheat"){
+                wheat++;
+            }
+            if(type2=="wool" || type=="wool"){
+                wool++;
+            }
+        // } else if (cardType == "Knight") {
+        //     std::cout << name << " played a Knight card." << std::endl;
+        } else if (cardType == "Victory Point") {
+            std::cout << name << " played a Victory Point card." << std::endl;
+            addPoints(1);
+        } else {
+            throw std::invalid_argument("Invalid card type.");
+        }
+        cards.erase(cards.begin() + inedx);
     }
 } // namespace ariel

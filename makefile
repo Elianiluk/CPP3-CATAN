@@ -1,43 +1,25 @@
-# Compiler and compiler flags
-CXX = clang++
-CXXFLAGS = -Wall -Wextra -std=c++17
-
-# Directories
-SRC_DIR = .
-OBJ_DIR = ./obj
-BIN_DIR = ./bin
+# Compiler and flags
+CC := g++
+CFLAGS := -Wall -Wextra -std=c++11
 
 # Source files and object files
-SRCS = $(wildcard $(SRC_DIR)/*.cpp)
-OBJS = $(patsubst $(SRC_DIR)/%.cpp, $(OBJ_DIR)/%.o, $(SRCS))
+SRCS := $(wildcard *.cpp)
+OBJS := $(SRCS:.cpp=.o)
 
-# Header files
-DEPS = $(wildcard $(SRC_DIR)/*.hpp)
-
-# Output executable
-TARGET = $(BIN_DIR)/demo
+# Target executable
+TARGET := myprogram
 
 # Default target
 all: $(TARGET)
 
-# Rule to build the executable
-$(TARGET): $(OBJS) | $(BIN_DIR)
-	$(CXX) $(CXXFLAGS) -o $(TARGET) $(OBJS)
+# Compile source files into object files
+%.o: %.cpp
+	$(CC) $(CFLAGS) -c $< -o $@
 
-# Rule to build object files
-$(OBJ_DIR)/%.o: $(SRC_DIR)/%.cpp $(DEPS) | $(OBJ_DIR)
-	$(CXX) $(CXXFLAGS) -c $< -o $@
+# Link object files into the executable
+$(TARGET): $(OBJS)
+	$(CC) $(CFLAGS) $^ -o $@
 
-# Create directories if they don't exist
-$(OBJ_DIR):
-	mkdir -p $(OBJ_DIR)
-
-$(BIN_DIR):
-	mkdir -p $(BIN_DIR)
-
-# Clean up build files
+# Clean up object files and the executable
 clean:
-	rm -rf $(OBJ_DIR) $(BIN_DIR)
-
-# Phony targets
-.PHONY: all clean
+	rm -f $(OBJS) $(TARGET)

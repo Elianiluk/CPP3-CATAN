@@ -12,7 +12,7 @@ public:
     Catan(Player p1, Player p2, Player p3);
     void ChooseStartingPlayer();
     Board getBoard();
-    void Catan::play(int roll,Board Board);
+    void play(int roll,Board Board);
     void printWinner();
 
 private:
