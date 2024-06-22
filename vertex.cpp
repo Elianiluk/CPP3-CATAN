@@ -1,7 +1,7 @@
 #include "vertex.hpp"
 
 namespace ariel {
-    Vertex::Vertex(int num) : num(num), neighbors(3, nullptr), incidentEdges(3, nullptr) {}
+    Vertex::Vertex(int num) : num(num),playerID(-1),settelment(false),city(false), neighbors(3, nullptr), incidentEdges(3, nullptr) {}
 
     int Vertex::getNum() const {
         return num;
@@ -17,5 +17,21 @@ namespace ariel {
         incidentEdges[0] = edge1;
         incidentEdges[1] = edge2;
         incidentEdges[2] = edge3;
+    }
+
+    bool Vertex::hasSettlement() const {
+        return settelment;
+    }
+
+    void Vertex::setSettlement() {
+        settelment = true;
+    }
+
+    void Vertex::addHexagon(int hexID) {
+        hexagons.push_back(hexID);
+    }
+
+    std::vector<int> Vertex::getHexagons() const {
+        return hexagons;
     }
 }

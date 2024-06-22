@@ -21,17 +21,18 @@ namespace ariel
         bool turn;
         int points;
         int knightCount;
-        std::vector<std::string> settelmentsName;
-        std::vector<int> settelmentsPosition;
-        std::vector<std::string> roadsName;
-        std::vector<int> roadsPosition;
+        std::vector<int> resourcesNum;
+        std::vector<std::string> resourcesName;
         std::vector<Card> cards;
+        int settelmentCount;
+        int cityCount;
+        int roadCount;
 
     public:
         Player(std::string name);
         std::string getName();
-        void placeSettelemnt(std::vector<std::string> places, std::vector<int> placesNum, Board &board);
-        void placeRoad(std::vector<std::string> places, std::vector<int> placesNum, Board &board);
+        void placeSettlement(int HexagonNum, int vertexID, Board &board, bool firstRound);
+        void placeRoad(int HexagonNum, int edgeID, Board &board, bool firstRound);
         void trade(Player other,std::string,std::string,int amount1,int amount2);
         void addPoints(int p);
         int getPoints();
@@ -40,6 +41,9 @@ namespace ariel
         int rollDice();
         void buyCard();
         void playCard(std::string card,std::string type,std::string type2,Player other,Player other2);
+        void printResources();
+        bool resourcesNumContains(int hexID);
+        bool resourcesNameContains(std::string type);
     };
 } // namespace ariel
 

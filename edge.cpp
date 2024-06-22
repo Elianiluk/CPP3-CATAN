@@ -1,7 +1,7 @@
 #include "edge.hpp"
 
 namespace ariel {
-    Edge::Edge(int num) : num(num), vertex1(nullptr), vertex2(nullptr), neighbors(4, nullptr) {}
+    Edge::Edge(int num) : num(num), vertex1(nullptr), vertex2(nullptr), neighbors(4, nullptr),road(false),hexagons({}) {}
 
     int Edge::getNum() const {
         return num;
@@ -24,5 +24,21 @@ namespace ariel {
         neighbors[1] = edge2;
         neighbors[2] = edge3;
         neighbors[3] = edge4;
+    }
+
+    bool Edge::hasRoad() {
+        return road;
+    }
+
+    void Edge::setRoad() {
+        road = true;
+    }
+
+    void Edge::addHexagon(int hexID) {
+        hexagons.push_back(hexID);
+    }
+
+    std::vector<int> Edge::getHexagons() const {
+        return hexagons;
     }
 }

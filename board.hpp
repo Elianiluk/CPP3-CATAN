@@ -14,6 +14,8 @@ namespace ariel {
         ~Board();
         void createBoard();
         void printBoard() const;
+        void createSettlement(int vertexID, int playerID);
+        Hexagon* getHexagon(int hexID) const;
 
     private:
         std::vector<Hexagon*> board;

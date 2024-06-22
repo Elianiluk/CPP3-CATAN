@@ -7,65 +7,65 @@ namespace ariel {
 
         //create the vertices
         // first row
-        board[0] = new Hexagon(10, "Mountains");
+        board[0] = new Hexagon(10,0, "Mountains");
         board[0]->setVertices(new Vertex(0), new Vertex(1), new Vertex(2), new Vertex(3), new Vertex(4), new Vertex(5));
 
-        board[1] = new Hexagon(2, "Pasture land");
+        board[1] = new Hexagon(2,1, "Pasture land");
         board[1]->setVertices(new Vertex(6), board[0]->getVertex(5), board[0]->getVertex(4), new Vertex(7), new Vertex(8), new Vertex(9));
 
-        board[2] = new Hexagon(9, "Forest");
+        board[2] = new Hexagon(9,2, "Forest");
         board[2]->setVertices(new Vertex(10), board[1]->getVertex(5), board[1]->getVertex(4), new Vertex(11), new Vertex(12), new Vertex(13));
 
         // second row
-        board[3] = new Hexagon(12, "Agricultural land");
+        board[3] = new Hexagon(12,3, "Agricultural Land");
         board[3]->setVertices(board[0]->getVertex(2), new Vertex(14), new Vertex(15), new Vertex(16), new Vertex(17), board[0]->getVertex(3));
 
-        board[4] = new Hexagon(6, "Hills");
+        board[4] = new Hexagon(6,4, "Hills");
         board[4]->setVertices(board[1]->getVertex(2), board[3]->getVertex(5), board[3]->getVertex(4), new Vertex(18), new Vertex(19), board[1]->getVertex(3));
 
-        board[5] = new Hexagon(4, "Pasture land");
+        board[5] = new Hexagon(4,5, "Pasture Land");
         board[5]->setVertices(board[2]->getVertex(2), board[4]->getVertex(5), board[4]->getVertex(4), new Vertex(20), new Vertex(21), board[2]->getVertex(3));
 
-        board[6] = new Hexagon(10, "Hills");
+        board[6] = new Hexagon(10,6, "Hills");
         board[6]->setVertices(board[2]->getVertex(4), board[5]->getVertex(5), board[5]->getVertex(4), new Vertex(22), new Vertex(23), new Vertex(24));
 
         // third row
-        board[7] = new Hexagon(9, "Agricultural land");
+        board[7] = new Hexagon(9,7, "Agricultural Land");
         board[7]->setVertices(board[3]->getVertex(2), new Vertex(25), new Vertex(26), new Vertex(27), new Vertex(28), board[3]->getVertex(3));
 
-        board[8] = new Hexagon(11, "Forest");
+        board[8] = new Hexagon(11,8, "Forest");
         board[8]->setVertices(board[4]->getVertex(2), board[7]->getVertex(5), board[7]->getVertex(4), new Vertex(29), new Vertex(30), board[4]->getVertex(3));
 
-        board[9] = new Hexagon(-1, "Desert");
+        board[9] = new Hexagon(-1,9, "Desert");
         board[9]->setVertices(board[5]->getVertex(2), board[8]->getVertex(5), board[8]->getVertex(4), new Vertex(31), new Vertex(32), board[5]->getVertex(3));
 
-        board[10] = new Hexagon(3, "Forest");
+        board[10] = new Hexagon(3,10, "Forest");
         board[10]->setVertices(board[6]->getVertex(2), board[9]->getVertex(5), board[9]->getVertex(4), new Vertex(33), new Vertex(34), board[6]->getVertex(3));
 
-        board[11] = new Hexagon(8, "Mountains");
+        board[11] = new Hexagon(8,11, "Mountains");
         board[11]->setVertices(board[6]->getVertex(4), board[10]->getVertex(5), board[10]->getVertex(4), new Vertex(35), new Vertex(36), new Vertex(37));
 
         // fourth row
-        board[12] = new Hexagon(8, "Forest");
+        board[12] = new Hexagon(8,12, "Forest");
         board[12]->setVertices(board[7]->getVertex(4), board[7]->getVertex(3), new Vertex(38), new Vertex(39), new Vertex(40), board[8]->getVertex(3));
 
-        board[13] = new Hexagon(3, "Mountains");
+        board[13] = new Hexagon(3,13, "Mountains");
         board[13]->setVertices(board[8]->getVertex(4), board[12]->getVertex(5), board[12]->getVertex(4), new Vertex(41), new Vertex(42), board[9]->getVertex(3));
 
-        board[14] = new Hexagon(4, "Agricultural land");
+        board[14] = new Hexagon(4,14, "Agricultural Land");
         board[14]->setVertices(board[9]->getVertex(4), board[13]->getVertex(5), board[13]->getVertex(4), new Vertex(43), new Vertex(44), board[10]->getVertex(3));
 
-        board[15] = new Hexagon(5, "Pasture land");
+        board[15] = new Hexagon(5,15, "Pasture Land");
         board[15]->setVertices(board[10]->getVertex(4), board[14]->getVertex(5), board[14]->getVertex(4), new Vertex(45), new Vertex(46), board[11]->getVertex(3));
 
         // fifth row
-        board[16] = new Hexagon(5, "Hills");
+        board[16] = new Hexagon(5,16, "Hills");
         board[16]->setVertices(board[12]->getVertex(4), board[12]->getVertex(3), new Vertex(47), new Vertex(48), new Vertex(49), board[13]->getVertex(3));
 
-        board[17] = new Hexagon(6, "Agricultural land");
+        board[17] = new Hexagon(6,17, "Agricultural Land");
         board[17]->setVertices(board[13]->getVertex(4), board[16]->getVertex(5), board[16]->getVertex(4), new Vertex(50), new Vertex(51), board[14]->getVertex(3));
 
-        board[18] = new Hexagon(11, "Pasture land");
+        board[18] = new Hexagon(11,19, "Pasture Land");
         board[18]->setVertices(board[14]->getVertex(4), board[17]->getVertex(5), board[17]->getVertex(4), new Vertex(52), new Vertex(53), board[15]->getVertex(3));
 
         // set edges for each land
@@ -555,5 +555,12 @@ namespace ariel {
             std::cout << std::endl;
         }
     }
+
+    Hexagon* Board::getHexagon(int hexID) const {
+    if (hexID >= 0 && hexID < board.size()) {
+        return board[hexID];
+    }
+    return nullptr;
+}
     
 }

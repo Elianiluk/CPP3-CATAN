@@ -4,29 +4,150 @@ namespace ariel
 {
     Player::Player(std::string name)
         : name(name), wood(0), brick(0), ore(0), wheat(0), wool(0), turn(false),
-          points(0), knightCount(0), settelmentsName({}), settelmentsPosition({}),
-          roadsName({}), roadsPosition({}), cards({}) {}
+          points(0), knightCount(0),resourcesNum({}),resourcesName({}),cards({}),settelmentCount(0),cityCount(0),roadCount(0) {}
           
-    void Player::placeSettelemnt(std::vector<std::string> places, std::vector<int> placesNum, Board &board)
-    {
-        if(turn==false){
+    
+    void Player::placeSettlement(int HexagonNum, int vertexID, Board &board, bool firstRound) {
+        if (turn == false) {
             throw std::invalid_argument("It's not your turn.");
         }
-        if (places.size() != 2 || placesNum.size() != 2)
-        {
-            throw std::invalid_argument("You must place two settlements.");
+        if (vertexID < 0 || vertexID > 5) {
+            throw std::invalid_argument("Invalid vertex ID.");
         }
-        // if (board.getTile(places[0], placesNum[0]).getOwner() != "" || board.getTile(places[1], placesNum[1]).getOwner() != "")
-        // {
-        //     throw std::invalid_argument("One of the places is already taken.");
-        // }
-        settelmentsName.push_back(places[0]);
-        settelmentsName.push_back(places[1]);
-        settelmentsPosition.push_back(placesNum[0]);
-        settelmentsPosition.push_back(placesNum[1]);
-        addPoints(2);
-        // board.getTile(places[0], placesNum[0]).setOwner(name);
-        // board.getTile(places[1], placesNum[1]).setOwner(name);
+        if (HexagonNum < 0 || HexagonNum > 18) {
+            throw std::invalid_argument("Invalid hexagon number.");
+        }
+
+        Hexagon* hex = board.getHexagon(HexagonNum); // Assuming Board has a getHexagon method
+        if (!hex) {
+            throw std::invalid_argument("Hexagon not found.");
+        }
+
+        Vertex* vertex = hex->getVertex(vertexID);
+        if (!vertex) {
+            throw std::invalid_argument("Vertex not found.");
+        }
+
+        if (vertex->hasSettlement()) {
+            std::cout << "Vertex " << vertexID << " already has a settlement." << std::endl;
+            return;
+        }
+
+        vertex->setSettlement();
+        std::cout << "Settlement created at vertex " << vertex->getNum() << " for " << name << "." << std::endl;
+
+        if(!firstRound)
+            return;
+
+        // Add resources
+        std::vector<int> resources = vertex->getHexagons();
+        for (int hexID : resources) {
+            if(!resourcesNumContains(hexID) || !resourcesNameContains(board.getHexagon(hexID)->getType())){
+                resourcesNum.push_back(hexID);
+                resourcesName.push_back(board.getHexagon(hexID)->getType());
+            }
+            Hexagon* hex = board.getHexagon(hexID);
+            if (!hex) {
+                throw std::invalid_argument("Hexagon not found.");
+            }
+            std::cout << "Hexagon " << hexID << " has " << hex->getType() << " resources." <<"with hexId:" << hexID << "name:" << hex->getName() << std::endl;
+            std::string type = hex->getType();
+            if (type == "wood") {
+                wood++;
+            } else if (type == "ore") {
+                ore++;
+            } else if (type == "brick") {
+                brick++;
+            } else if (type == "wheat") {
+                wheat++;
+            } else if (type == "wool") {
+                wool++;
+            } else {
+                
+            }
+        }
+        settelmentCount++;
+    }
+
+    void Player::placeRoad(int HexagonNum, int edgeID, Board &board,bool firstRound) {
+        if (turn == false) {
+            throw std::invalid_argument("It's not your turn.");
+        }
+        if (edgeID < 0 || edgeID > 5) {
+            throw std::invalid_argument("Invalid edge ID.");
+        }
+        if (HexagonNum < 0 || HexagonNum > 18) {
+            throw std::invalid_argument("Invalid hexagon number.");
+        }
+
+        Hexagon* hex = board.getHexagon(HexagonNum); // Assuming Board has a getHexagon method
+        if (!hex) {
+            throw std::invalid_argument("Hexagon not found.");
+        }
+
+        Edge* edge = hex->getEdge(edgeID);
+        if (!edge) {
+            throw std::invalid_argument("Edge not found.");
+        }
+
+        if (edge->hasRoad()) {
+            std::cout << "Edge " << edgeID << " already has a road." << std::endl;
+            return;
+        }
+
+        addPoints(1);
+
+        edge->setRoad();
+        std::cout << "Road created at edge " << edge->getNum() << " for " << name << "." << std::endl;
+        
+        if(!firstRound)
+            return;
+        
+        std::vector<int> resources = edge->getHexagons();
+        for (int hexID : resources) {
+            if(!resourcesNumContains(hexID) || !resourcesNameContains(board.getHexagon(hexID)->getType())){
+                resourcesNum.push_back(hexID);
+                resourcesName.push_back(board.getHexagon(hexID)->getType());
+            }
+            Hexagon* hex = board.getHexagon(hexID);
+            if (!hex) {
+                throw std::invalid_argument("Hexagon not found.");
+            }
+            std::cout << "Hexagon " << hexID << " has " << hex->getType() << " resources." <<"with hexId:" << hexID << "name:" << hex->getName() << std::endl;
+            std::string type = hex->getType();
+            if (type == "wood") {
+                wood++;
+            } else if (type == "ore") {
+                ore++;
+            } else if (type == "brick") {
+                brick++;
+            } else if (type == "wheat") {
+                wheat++;
+            } else if (type == "wool") {
+                wool++;
+            } else {
+                
+            }
+        }
+        roadCount++;
+    }
+
+    bool Player::resourcesNumContains(int hexID){
+        for(size_t i=0;i<resourcesNum.size();i++){
+            if(resourcesNum[i]==hexID){
+                return true;
+            }
+        }
+        return false;
+    }
+
+    bool Player::resourcesNameContains(std::string type){
+        for(size_t i=0;i<resourcesName.size();i++){
+            if(resourcesName[i]==type){
+                return true;
+            }
+        }
+        return false;
     }
 
     void Player::trade(Player other,std::string s1,std::string s2,int amount1,int amount2){
@@ -132,26 +253,6 @@ namespace ariel
     int Player::getPoints()
     {
         return points;
-    }
-
-    void Player::placeRoad(std::vector<std::string> places, std::vector<int> placesNum, Board &board)
-    {
-        if(turn==false){
-            throw std::invalid_argument("It's not your turn.");
-        }
-
-        if (places.size() != 2 || placesNum.size() != 2)
-        {
-            throw std::invalid_argument("You must place two roads.");
-        }
-        // if (board.getTile(places[0], placesNum[0]).getOwner() != name || board.getTile(places[1], placesNum[1]).getOwner() != name)
-        // {
-        //     throw std::invalid_argument("You must place the road near your settlement.");
-        // }
-        roadsName.push_back(places[0]);
-        roadsName.push_back(places[1]);
-        roadsPosition.push_back(placesNum[0]);
-        roadsPosition.push_back(placesNum[1]);
     }
 
     void Player::changeTurn()
@@ -363,5 +464,15 @@ namespace ariel
             throw std::invalid_argument("Invalid card type.");
         }
         cards.erase(cards.begin() + inedx);
+    }
+
+    void Player::printResources() {
+        std::cout << "Resources for " << name << ":" << std::endl;
+        std::cout << "Wood: " << wood << std::endl;
+        std::cout << "Ore: " << ore << std::endl;
+        std::cout << "Brick: " << brick << std::endl;
+        std::cout << "Wheat: " << wheat << std::endl;
+        std::cout << "Wool: " << wool << std::endl;
+
     }
 } // namespace ariel
