@@ -8,9 +8,12 @@ namespace ariel {
     }
 
     void Vertex::addNeighbors(Vertex* neighbor1, Vertex* neighbor2, Vertex* neighbor3) {
-        neighbors[0] = neighbor1;
-        neighbors[1] = neighbor2;
-        neighbors[2] = neighbor3;
+        if(neighbor1 != nullptr)
+            neighbors[0] = neighbor1;
+        if(neighbor2 != nullptr)
+            neighbors[1] = neighbor2;
+        if(neighbor3 != nullptr)
+            neighbors[2] = neighbor3;
     }
 
     void Vertex::addIncidentEdges(Edge* edge1, Edge* edge2, Edge* edge3) {
@@ -34,4 +37,27 @@ namespace ariel {
     std::vector<int> Vertex::getHexagons() const {
         return hexagons;
     }
+
+    std::vector<Vertex*> Vertex::getNeighbors() const {
+        return neighbors;
+    }
+
+    bool Vertex::hasCity() const {
+        return city;
+    }
+
+    void Vertex::setCity() {
+        city = true;
+        settelment = false;
+    }
+
+    // std::string Vertex::getConstructionSymbol() const {
+    //     if (city) {
+    //         return "C";
+    //     } else if (settelment) {
+    //         return "S";
+    //     } else {
+    //         return " ";
+    //     }
+    // }
 }

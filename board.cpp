@@ -557,10 +557,33 @@ namespace ariel {
     }
 
     Hexagon* Board::getHexagon(int hexID) const {
-    if (hexID >= 0 && hexID < board.size()) {
+    if (hexID >= 0 && hexID < 19) {
         return board[hexID];
     }
     return nullptr;
-}
-    
+    }
+
+//     void Board::displayBoard()
+//     {
+//                 std::cout << "            A      B       C\n"
+//          << "          D/   E\\  F/   G\\   H/   I\\\n"
+//          << "         J     K       L      M\n"
+//          << "         N| O  P|  Q   R|  S  T|\n"
+//          << "         U  1  V   2   W   3  X  Y\n"
+//          << "       Z/   A1\\ B1/   C1\\   D1/   E1\\ F1/   G1\\\n"
+//          << "      H1     I1      J1      K1      L1\n"
+//          << "      M1| N1  O1|  P1  Q1|  R1  S1|\n"
+//          << "      T1  4  U1   5  V1  6  W1  7  X1  8  Y1  9  Z1\n"
+//          << "    A2/   B2\\ C2/   D2\\   E2/   F2\\ G2/   H2\\\n"
+//          << "   I2     J2      K2      L2     M2      N2\n"
+//          << "   O2| P2  Q2|  R2  S2|  T2  U2| V2  W2|\n"
+//          << "   X2  10  Y2  11  Z2  12  A3  13  B3  14  C3  15  D3\n"
+//          << "    E3\\   F3/ G3\\   H3/  I3\\   J3/ K3\\   L3/\n"
+//          << "      M3     N3      O3      P3\n"
+//          << "      Q3|  R3  S3|  T3  U3|  V3|\n"
+//          << "      W3   16  X3   17  Y3   18  Z3\n"
+//          << "           A4\\   B4/  C4\\   D4/\n"
+//          << "             E4      F4      G4\n";
+//      }
+   
 }

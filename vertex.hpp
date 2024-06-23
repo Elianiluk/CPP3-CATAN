@@ -2,6 +2,7 @@
 #define VERTEX_HPP
 
 #include <vector>
+#include <string>
 
 namespace ariel {
     class Edge;  // Forward declaration
@@ -24,8 +25,12 @@ namespace ariel {
         void addIncidentEdges(Edge* edge1, Edge* edge2, Edge* edge3);
         bool hasSettlement() const;
         void setSettlement();
+        bool hasCity() const;
+        void setCity();
         void addHexagon(int hexID);
         std::vector<int> getHexagons() const;
+        std::vector<Vertex*> getNeighbors() const;
+        // std::string getConstructionSymbol() const;
     };
 }
 

@@ -9,15 +9,18 @@ namespace ariel {
 
 class Catan {
 public:
-    Catan(Player p1, Player p2, Player p3);
+    Catan(Player& p1, Player& p2, Player& p3);
     void ChooseStartingPlayer();
-    Board getBoard();
-    void play(int roll,Board Board);
+    Board& getBoard();
+    void play(int roll,Board &board);
     void printWinner();
+    Player& getPlayer(int i);
 
 private:
-    Player p1, p2, p3;
-    std::vector<Player> players;
+    Player& p1;
+    Player& p2;
+    Player& p3;
+    std::vector<Player*> players;
     Board board;
 };
 

@@ -8,6 +8,14 @@ namespace ariel
           
     
     void Player::placeSettlement(int HexagonNum, int vertexID, Board &board, bool firstRound) {
+        if(!firstRound){
+            if(wood==0 || brick==0 || wool==0 || wheat==0)
+                throw std::invalid_argument("You don't have enough resources to build a settlement.");
+            wood--;
+            brick--;
+            wool--;
+            wheat--;
+        }
         if (turn == false) {
             throw std::invalid_argument("It's not your turn.");
         }
@@ -28,6 +36,15 @@ namespace ariel
             throw std::invalid_argument("Vertex not found.");
         }
 
+        std::vector<Vertex*> vertices = vertex->getNeighbors();
+        for (Vertex* v : vertices) {
+            if(!v)
+                continue;
+            if (v->hasSettlement()) {
+                throw std::invalid_argument("Cannot place a settlement next to another settlement.");
+            }
+        }
+
         if (vertex->hasSettlement()) {
             std::cout << "Vertex " << vertexID << " already has a settlement." << std::endl;
             return;
@@ -35,6 +52,7 @@ namespace ariel
 
         vertex->setSettlement();
         std::cout << "Settlement created at vertex " << vertex->getNum() << " for " << name << "." << std::endl;
+        addPoints(1);
 
         if(!firstRound)
             return;
@@ -70,6 +88,12 @@ namespace ariel
     }
 
     void Player::placeRoad(int HexagonNum, int edgeID, Board &board,bool firstRound) {
+        if(!firstRound){
+            if(wood==0 || brick==0)
+                throw std::invalid_argument("You don't have enough resources to build a road.");
+            wood--;
+            brick--;
+        }
         if (turn == false) {
             throw std::invalid_argument("It's not your turn.");
         }
@@ -90,12 +114,19 @@ namespace ariel
             throw std::invalid_argument("Edge not found.");
         }
 
+        std::vector<Edge*> edges = edge->getNeighbors();
+        for (Edge* e : edges) {
+            if(!e)
+                continue;
+            if (e->hasRoad()) {
+                throw std::invalid_argument("Cannot place a road next to another road.");
+            }
+        }
+
         if (edge->hasRoad()) {
             std::cout << "Edge " << edgeID << " already has a road." << std::endl;
             return;
         }
-
-        addPoints(1);
 
         edge->setRoad();
         std::cout << "Road created at edge " << edge->getNum() << " for " << name << "." << std::endl;
@@ -130,6 +161,54 @@ namespace ariel
             }
         }
         roadCount++;
+    }
+
+    void Player::placeCity(int HexagonNum, int vertexID, Board &board) {
+        if(wheat<2 || ore<3)
+            throw std::invalid_argument("You don't have enough resources to build a city.");
+        if (turn == false) {
+            throw std::invalid_argument("It's not your turn.");
+        }
+        if (vertexID < 0 || vertexID > 5) {
+            throw std::invalid_argument("Invalid vertex ID.");
+        }
+        if (HexagonNum < 0 || HexagonNum > 18) {
+            throw std::invalid_argument("Invalid hexagon number.");
+        }
+
+        Hexagon* hex = board.getHexagon(HexagonNum); // Assuming Board has a getHexagon method
+        if (!hex) {
+            throw std::invalid_argument("Hexagon not found.");
+        }
+
+        Vertex* vertex = hex->getVertex(vertexID);
+        if (!vertex) {
+            throw std::invalid_argument("Vertex not found.");
+        }
+
+        if (!vertex->hasSettlement()) {
+            throw std::invalid_argument("Cannot place a city without a settlement.");
+        }
+
+        if (vertex->hasCity()) {
+            std::cout << "Vertex " << vertexID << " already has a city." << std::endl;
+            return;
+        }
+
+        vertex->setCity();
+        std::cout << "City created at vertex " << vertex->getNum() << " for " << name << "." << std::endl;
+        addPoints(-1);
+        addPoints(2);
+        cityCount++;
+        settelmentCount--;
+
+        std::vector<int> resources = vertex->getHexagons();
+        for (int hexID : resources) {
+        if(!resourcesNumContains(hexID) || !resourcesNameContains(board.getHexagon(hexID)->getType())){
+                resourcesNum.push_back(hexID);
+                resourcesName.push_back(board.getHexagon(hexID)->getType());
+            }
+        }
     }
 
     bool Player::resourcesNumContains(int hexID){
@@ -475,4 +554,6 @@ namespace ariel
         std::cout << "Wool: " << wool << std::endl;
 
     }
+
+    std::vector 
 } // namespace ariel

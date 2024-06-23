@@ -71,4 +71,8 @@ namespace ariel {
             return "-1";
         }
     }
+
+    // std::string Hexagon::getLandSymbol() const {
+    //     return this->getName().substr(0, 1);  // Example: 'w' for "wood"
+    // }
 }

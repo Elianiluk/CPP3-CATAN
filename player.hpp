@@ -33,6 +33,7 @@ namespace ariel
         std::string getName();
         void placeSettlement(int HexagonNum, int vertexID, Board &board, bool firstRound);
         void placeRoad(int HexagonNum, int edgeID, Board &board, bool firstRound);
+        void placeCity(int HexagonNum, int edgeID, Board &board);
         void trade(Player other,std::string,std::string,int amount1,int amount2);
         void addPoints(int p);
         int getPoints();
@@ -44,6 +45,7 @@ namespace ariel
         void printResources();
         bool resourcesNumContains(int hexID);
         bool resourcesNameContains(std::string type);
+        std::vector<int> getResourcesNUm() const;
     };
 } // namespace ariel
 

@@ -41,4 +41,8 @@ namespace ariel {
     std::vector<int> Edge::getHexagons() const {
         return hexagons;
     }
+
+    std::vector<Edge*> Edge::getNeighbors() const {
+        return neighbors;
+    }
 }

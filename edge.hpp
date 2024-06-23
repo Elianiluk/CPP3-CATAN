@@ -25,6 +25,7 @@ namespace ariel {
         void setRoad();
         void addHexagon(int hexID);
         std::vector<int> getHexagons() const;
+        std::vector<Edge*> getNeighbors() const;
     };
 }
 
