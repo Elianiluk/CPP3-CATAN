@@ -24,12 +24,13 @@ namespace ariel {
         void addNeighbors(Vertex* neighbor1, Vertex* neighbor2, Vertex* neighbor3);
         void addIncidentEdges(Edge* edge1, Edge* edge2, Edge* edge3);
         bool hasSettlement() const;
-        void setSettlement();
+        void setSettlement(int playerID);
         bool hasCity() const;
         void setCity();
         void addHexagon(int hexID);
         std::vector<int> getHexagons() const;
         std::vector<Vertex*> getNeighbors() const;
+        int getPlayerID() const;
         // std::string getConstructionSymbol() const;
     };
 }

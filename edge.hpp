@@ -13,6 +13,7 @@ namespace ariel {
         std::vector<Edge*> neighbors;
         bool road;
         std::vector<int> hexagons;
+        int playerID;
 
     public:
         Edge(int num);
@@ -22,10 +23,11 @@ namespace ariel {
         void setNeighbors(Edge* neighbor1, Edge* neighbor2, Edge* neighbor3, Edge* neighbor4);
         void addAdjEdges(Edge* edge1, Edge* edge2, Edge* edge3, Edge* edge4);
         bool hasRoad();
-        void setRoad();
+        void setRoad(int playerID);
         void addHexagon(int hexID);
         std::vector<int> getHexagons() const;
         std::vector<Edge*> getNeighbors() const;
+        int getPlayerID() const;
     };
 }
 

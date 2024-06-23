@@ -27,9 +27,10 @@ namespace ariel
         int settelmentCount;
         int cityCount;
         int roadCount;
+        int playerID;
 
     public:
-        Player(std::string name);
+        Player(std::string name, int playerID);
         std::string getName();
         void placeSettlement(int HexagonNum, int vertexID, Board &board, bool firstRound);
         void placeRoad(int HexagonNum, int edgeID, Board &board, bool firstRound);
@@ -45,7 +46,8 @@ namespace ariel
         void printResources();
         bool resourcesNumContains(int hexID);
         bool resourcesNameContains(std::string type);
-        std::vector<int> getResourcesNUm() const;
+        std::vector<int> getResourcesNum() const;
+        void addResource(std::string type,int n);
     };
 } // namespace ariel
 

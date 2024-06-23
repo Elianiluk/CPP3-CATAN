@@ -26,8 +26,9 @@ namespace ariel {
         return settelment;
     }
 
-    void Vertex::setSettlement() {
+    void Vertex::setSettlement(int playerID) {
         settelment = true;
+        this->playerID = playerID;
     }
 
     void Vertex::addHexagon(int hexID) {
@@ -60,4 +61,8 @@ namespace ariel {
     //         return " ";
     //     }
     // }
+
+    int Vertex::getPlayerID() const {
+        return playerID;
+    }
 }

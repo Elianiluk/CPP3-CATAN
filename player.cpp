@@ -2,9 +2,9 @@
 
 namespace ariel
 {
-    Player::Player(std::string name)
+    Player::Player(std::string name,int playerID)
         : name(name), wood(0), brick(0), ore(0), wheat(0), wool(0), turn(false),
-          points(0), knightCount(0),resourcesNum({}),resourcesName({}),cards({}),settelmentCount(0),cityCount(0),roadCount(0) {}
+          points(0), knightCount(0),resourcesNum({}),resourcesName({}),cards({}),settelmentCount(0),cityCount(0),roadCount(0),playerID(playerID) {}
           
     
     void Player::placeSettlement(int HexagonNum, int vertexID, Board &board, bool firstRound) {
@@ -50,7 +50,7 @@ namespace ariel
             return;
         }
 
-        vertex->setSettlement();
+        vertex->setSettlement(playerID);
         std::cout << "Settlement created at vertex " << vertex->getNum() << " for " << name << "." << std::endl;
         addPoints(1);
 
@@ -128,7 +128,7 @@ namespace ariel
             return;
         }
 
-        edge->setRoad();
+        edge->setRoad(playerID);
         std::cout << "Road created at edge " << edge->getNum() << " for " << name << "." << std::endl;
         
         if(!firstRound)
@@ -345,9 +345,10 @@ namespace ariel
             throw std::invalid_argument("It's not your turn.");
         }
 
-        int dice = rand() % 6 + 1 + rand() % 6 + 1;
-        //std::cout << dice << std::endl;
-        return dice;
+        // int dice = rand() % 6 + 1 + rand() % 6 + 1;
+        // std::cout << dice << std::endl;
+        // return dice;
+        return 12;
     }
 
     void Player::buyCard() {
@@ -555,5 +556,26 @@ namespace ariel
 
     }
 
-    std::vector 
+    std::vector <int> Player::getResourcesNum() const{
+        return resourcesNum;
+    }
+
+    void Player::addResource(std::string type,int n){
+        if(type=="wood"){
+            wood+=n;
+        }
+        if(type=="ore"){
+            ore+=n;
+        }
+        if(type=="brick"){
+            brick+=n;
+        }
+        if(type=="wheat"){
+            wheat+=n;
+        }
+        if(type=="wool"){
+            wool+=n;
+        }
+        std::cout << "Resource added to " << name << "." << std::endl;
+    }
 } // namespace ariel

@@ -563,6 +563,16 @@ namespace ariel {
     return nullptr;
     }
 
+    std::vector<Hexagon*> Board::getRelevantHexagons(int roll) const{
+        std::vector<Hexagon*> relevantHexagons;
+        for (auto hex : board) {
+            if (hex->getNum() == roll) {
+                relevantHexagons.push_back(hex);
+            }
+        }
+        return relevantHexagons;
+    }
+
 //     void Board::displayBoard()
 //     {
 //                 std::cout << "            A      B       C\n"
