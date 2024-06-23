@@ -17,7 +17,7 @@ namespace ariel {
         void createSettlement(int vertexID, int playerID);
         Hexagon* getHexagon(int hexID) const;
         std::vector<Hexagon*> getRelevantHexagons(int roll) const;
-        // void displayBoard();
+        void displayBoard();
 
     private:
         std::vector<Hexagon*> board;

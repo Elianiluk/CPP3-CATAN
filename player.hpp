@@ -6,6 +6,7 @@
 #include <vector>
 #include "board.hpp"
 #include "developmentCard.hpp"
+#include <map>
 
 namespace ariel
 {
@@ -28,26 +29,30 @@ namespace ariel
         int cityCount;
         int roadCount;
         int playerID;
+        int color;
 
     public:
         Player(std::string name, int playerID);
         std::string getName();
-        void placeSettlement(int HexagonNum, int vertexID, Board &board, bool firstRound);
-        void placeRoad(int HexagonNum, int edgeID, Board &board, bool firstRound);
-        void placeCity(int HexagonNum, int edgeID, Board &board);
-        void trade(Player other,std::string,std::string,int amount1,int amount2);
+        void placeSettlement(Board &board, bool firstRound);
+        void placeRoad(Board &board, bool firstRound,bool card);
+        void placeCity(Board &board);
+        void trade(Player& other);
         void addPoints(int p);
         int getPoints();
         void printPoints();
         void changeTurn();
         int rollDice();
         void buyCard();
-        void playCard(std::string card,std::string type,std::string type2,Player other,Player other2);
+        void playCard(std::string card,Player& other,Player& other2,Board& board);
         void printResources();
         bool resourcesNumContains(int hexID);
         bool resourcesNameContains(std::string type);
         std::vector<int> getResourcesNum() const;
         void addResource(std::string type,int n);
+        int getPlayerID();
+        bool getTurn();
+        std::string getColor();
     };
 } // namespace ariel
 

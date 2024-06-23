@@ -72,7 +72,21 @@ namespace ariel {
         }
     }
 
-    // std::string Hexagon::getLandSymbol() const {
-    //     return this->getName().substr(0, 1);  // Example: 'w' for "wood"
-    // }
+    std::string Hexagon::getLandSymbol() const {
+        if (name=="Forest") {
+        return "🌲";
+    } else if (name=="Hills") {
+        return "🧱";
+    } else if (name=="Pasture Land") {
+        return "🐑";
+    } else if (name=="Agricultural Land") {
+        return "🌾";
+    } else if (name=="Mountains") {
+        return "⛰️ ";
+    } else if (name=="Desert") {
+        return "🏜️";
+    } else {
+        return " ";
+    }
+    }
 }

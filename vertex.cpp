@@ -52,15 +52,22 @@ namespace ariel {
         settelment = false;
     }
 
-    // std::string Vertex::getConstructionSymbol() const {
-    //     if (city) {
-    //         return "C";
-    //     } else if (settelment) {
-    //         return "S";
-    //     } else {
-    //         return " ";
-    //     }
-    // }
+    std::string Vertex::getConstructionSymbol() const {
+        if(playerID == -1)
+            return "O";
+        std::string symbol;
+        if (playerID == 0)
+            symbol+= "\033[1;31m";
+        if (playerID == 1)
+            symbol+= "\033[1;34m";
+        if (playerID == 2)
+            symbol+= "\033[1;32m";
+        if (city) 
+            symbol+= "C";
+        else if (settelment) 
+            symbol+= "S";
+        return symbol;
+    }
 
     int Vertex::getPlayerID() const {
         return playerID;

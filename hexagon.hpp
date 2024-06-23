@@ -22,6 +22,6 @@ namespace ariel {
         int getNum() const;
         std::string getName() const;
         std::string getType();
-        // std::string getLandSymbol() const;
+        std::string getLandSymbol() const;
     };
 }

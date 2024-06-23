@@ -10,7 +10,7 @@ namespace ariel {
         board[0] = new Hexagon(10,0, "Mountains");
         board[0]->setVertices(new Vertex(0), new Vertex(1), new Vertex(2), new Vertex(3), new Vertex(4), new Vertex(5));
 
-        board[1] = new Hexagon(2,1, "Pasture land");
+        board[1] = new Hexagon(2,1, "Pasture Land");
         board[1]->setVertices(new Vertex(6), board[0]->getVertex(5), board[0]->getVertex(4), new Vertex(7), new Vertex(8), new Vertex(9));
 
         board[2] = new Hexagon(9,2, "Forest");
@@ -573,27 +573,30 @@ namespace ariel {
         return relevantHexagons;
     }
 
-//     void Board::displayBoard()
-//     {
-//                 std::cout << "            A      B       C\n"
-//          << "          D/   E\\  F/   G\\   H/   I\\\n"
-//          << "         J     K       L      M\n"
-//          << "         N| O  P|  Q   R|  S  T|\n"
-//          << "         U  1  V   2   W   3  X  Y\n"
-//          << "       Z/   A1\\ B1/   C1\\   D1/   E1\\ F1/   G1\\\n"
-//          << "      H1     I1      J1      K1      L1\n"
-//          << "      M1| N1  O1|  P1  Q1|  R1  S1|\n"
-//          << "      T1  4  U1   5  V1  6  W1  7  X1  8  Y1  9  Z1\n"
-//          << "    A2/   B2\\ C2/   D2\\   E2/   F2\\ G2/   H2\\\n"
-//          << "   I2     J2      K2      L2     M2      N2\n"
-//          << "   O2| P2  Q2|  R2  S2|  T2  U2| V2  W2|\n"
-//          << "   X2  10  Y2  11  Z2  12  A3  13  B3  14  C3  15  D3\n"
-//          << "    E3\\   F3/ G3\\   H3/  I3\\   J3/ K3\\   L3/\n"
-//          << "      M3     N3      O3      P3\n"
-//          << "      Q3|  R3  S3|  T3  U3|  V3|\n"
-//          << "      W3   16  X3   17  Y3   18  Z3\n"
-//          << "           A4\\   B4/  C4\\   D4/\n"
-//          << "             E4      F4      G4\n";
-//      }
+    void Board::displayBoard(){
+        std::cout << "            " << this->board[0]->getVertex(0)->getConstructionSymbol() << "      " << this->board[1]->getVertex(0)->getConstructionSymbol() << "       " << this->board[2]->getVertex(0)->getConstructionSymbol() << "\n"
+                << "          " << this->board[0]->getEdge(0)->getColor() << "/   " << this->board[0]->getEdge(5)->getColor() << "\\  " << this->board[1]->getEdge(0)->getColor() << "/   " << this->board[1]->getEdge(5)->getColor() << "\\   " << this->board[2]->getEdge(0)->getColor() << "/   " << this->board[2]->getEdge(5)->getColor() << "\\\033[0m\n"
+                << "         " << this->board[0]->getVertex(1)->getConstructionSymbol() << "     " << this->board[0]->getVertex(5)->getConstructionSymbol() << "       " << this->board[1]->getVertex(5)->getConstructionSymbol() << "      " << this->board[2]->getVertex(5)->getConstructionSymbol() << "\n"
+                << "         " << this->board[0]->getEdge(1)->getColor() << "| " << this->board[0]->getLandSymbol() << this->board[0]->getEdge(4)->getColor() << "  |" << "  " << this->board[1]->getLandSymbol() << this->board[1]->getEdge(4)->getColor() << "   |  " << this->board[2]->getLandSymbol() << "  " << this->board[2]->getEdge(4)->getColor() << "|\033[0m\n"
+                << "         " << this->board[0]->getVertex(2)->getConstructionSymbol() << " " << this->board[0]->getNum()<< "  " << this->board[0]->getVertex(4)->getConstructionSymbol() << "   " << this->board[1]->getNum() << "   " << this->board[1]->getVertex(4)->getConstructionSymbol() << "   " << this->board[2]->getNum() << "  " << this->board[2]->getVertex(4)->getConstructionSymbol() << "\n"
+                << "       " << this->board[3]->getEdge(0)->getColor() << "/   " << this->board[3]->getEdge(5)->getColor() << "\\ " << this->board[4]->getEdge(0)->getColor() << "/   " << this->board[4]->getEdge(5)->getColor() << "\\   " << this->board[5]->getEdge(0)->getColor() << "/   " << this->board[5]->getEdge(5)->getColor() << "\\  " << this->board[6]->getEdge(0)->getColor() << "/   " << this->board[6]->getEdge(5)->getColor() << "\\\033[0m\n"
+                << "      " << this->board[3]->getVertex(1)->getConstructionSymbol() << "     " << this->board[3]->getVertex(5)->getConstructionSymbol() << "      " << this->board[4]->getVertex(5)->getConstructionSymbol() << "      " << this->board[5]->getVertex(5)->getConstructionSymbol() << "      " << this->board[6]->getVertex(5)->getConstructionSymbol() << "\n"
+                << "      " << this->board[3]->getEdge(1)->getColor() << "| " << this->board[3]->getLandSymbol() << this->board[3]->getEdge(4)->getColor() << "  |  " << this->board[4]->getLandSymbol() << this->board[4]->getEdge(4)->getColor() << "  |  " << this->board[5]->getLandSymbol() << this->board[5]->getEdge(4)->getColor() << "  |  " << this->board[6]->getLandSymbol() << "  " << this->board[6]->getEdge(4)->getColor() << "|\033[0m\n"
+                << "      " << this->board[3]->getVertex(2)->getConstructionSymbol() << " " << this->board[3]->getNum() << "  " << this->board[3]->getVertex(4)->getConstructionSymbol() << "   " << this->board[4]->getNum() << "   " << this->board[4]->getVertex(4)->getConstructionSymbol() << "  " << this->board[5]->getNum() << "  " << this->board[5]->getVertex(4)->getConstructionSymbol() << "  " << this->board[6]->getNum() << "  " << this->board[6]->getVertex(4)->getConstructionSymbol() << "\n"
+                << "    " << this->board[7]->getEdge(0)->getColor() << "/   " << this->board[7]->getEdge(5)->getColor() << "\\ " << this->board[8]->getEdge(0)->getColor() << "/   " << this->board[8]->getEdge(5)->getColor() << "\\   " << this->board[9]->getEdge(0)->getColor() << "/   " << this->board[9]->getEdge(5)->getColor() << "\\ " << this->board[10]->getEdge(0)->getColor() << "/   " << this->board[10]->getEdge(5)->getColor() << "\\  " << this->board[11]->getEdge(0)->getColor() << "/   " << this->board[11]->getEdge(5)->getColor() << "\\\033[0m\n"
+                << "   " << this->board[7]->getVertex(1)->getConstructionSymbol() << "     " << this->board[7]->getVertex(5)->getConstructionSymbol() << "      " << this->board[8]->getVertex(5)->getConstructionSymbol() << "      " << this->board[9]->getVertex(5)->getConstructionSymbol() << "     " << this->board[10]->getVertex(5)->getConstructionSymbol() << "      " << this->board[11]->getVertex(5)->getConstructionSymbol() << "\n"
+                << "   " << this->board[7]->getEdge(1)->getColor() << "| " << this->board[7]->getLandSymbol() << this->board[7]->getEdge(4)->getColor() << "  |  " << this->board[8]->getLandSymbol() << this->board[8]->getEdge(4)->getColor() << "  |  " << this->board[9]->getLandSymbol() << this->board[9]->getEdge(4)->getColor() << "   | " << this->board[10]->getLandSymbol() << this->board[10]->getEdge(4)->getColor() << "  |  " << this->board[11]->getLandSymbol() << "  " << this->board[11]->getEdge(4)->getColor() << "|\033[0m\n"
+                << "   " << this->board[7]->getVertex(2)->getConstructionSymbol() << "  " << this->board[7]->getNum() << "  " << this->board[7]->getVertex(4)->getConstructionSymbol() << "  " << this->board[8]->getNum() << "  " << this->board[8]->getVertex(4)->getConstructionSymbol() << "   " << this->board[9]->getNum() << "  " << this->board[9]->getVertex(4)->getConstructionSymbol() << "  " << this->board[10]->getNum() << "  " << this->board[10]->getVertex(4)->getConstructionSymbol() << "   " << this->board[11]->getNum() << "  " << this->board[11]->getVertex(4)->getConstructionSymbol() << "\n"
+                << "    " << this->board[7]->getEdge(2)->getColor() << "\\   " << this->board[7]->getEdge(3)->getColor() << "/ " << this->board[8]->getEdge(2)->getColor() << "\\    " << this->board[8]->getEdge(3)->getColor() << "/   " << this->board[9]->getEdge(2)->getColor() << "\\ " << this->board[9]->getEdge(3)->getColor() << "/   " << this->board[10]->getEdge(2)->getColor() << "\\ " << this->board[10]->getEdge(3)->getColor() << "/   " << this->board[11]->getEdge(2)->getColor() << "\\   " << this->board[11]->getEdge(3)->getColor() << "/\033[0m\n"
+                << "      " << this->board[12]->getVertex(1)->getConstructionSymbol() << "     " << this->board[12]->getVertex(5)->getConstructionSymbol() << "      " << this->board[13]->getVertex(5)->getConstructionSymbol() << "      " << this->board[14]->getVertex(5)->getConstructionSymbol() << "      " << this->board[15]->getVertex(5)->getConstructionSymbol() << "\n"
+                << "      " << this->board[12]->getEdge(1)->getColor() << "| " << this->board[12]->getLandSymbol() << this->board[12]->getEdge(4)->getColor() << "  |  " << this->board[13]->getLandSymbol() << this->board[13]->getEdge(4)->getColor() << "  |  " << this->board[14]->getLandSymbol() << this->board[14]->getEdge(4)->getColor() << "  |  " << this->board[15]->getLandSymbol() << this->board[15]->getEdge(4)->getColor() << "  |\033[0m\n"
+                << "      " << this->board[12]->getVertex(2)->getConstructionSymbol() << "  " << this->board[12]->getNum() << "  " << this->board[12]->getVertex(4)->getConstructionSymbol() << "   " << this->board[13]->getNum() << "  " << this->board[13]->getVertex(4)->getConstructionSymbol() << "   " << this->board[14]->getNum() << "  " << this->board[14]->getVertex(4)->getConstructionSymbol() << "   " << this->board[15]->getNum() << "  " << this->board[15]->getVertex(4)->getConstructionSymbol() << "\n"
+                << "       " << this->board[12]->getEdge(2)->getColor() << "\\   " << this->board[12]->getEdge(3)->getColor() << "/  " << this->board[13]->getEdge(2)->getColor() << "\\   " << this->board[13]->getEdge(3)->getColor() << "/  " << this->board[14]->getEdge(2)->getColor() << "\\   " << this->board[14]->getEdge(3)->getColor() << "/  " << this->board[15]->getEdge(2)->getColor() << "\\   " << this->board[15]->getEdge(3)->getColor() << "/\033[0m\n"
+                << "         " << this->board[16]->getVertex(1)->getConstructionSymbol() << "      " << this->board[16]->getVertex(5)->getConstructionSymbol() << "      " << this->board[17]->getVertex(5)->getConstructionSymbol() << "      " << this->board[18]->getVertex(5)->getConstructionSymbol() << "\n"
+                << "         " << this->board[16]->getEdge(1)->getColor() << "|  " << this->board[16]->getLandSymbol() << this->board[16]->getEdge(4)->getColor() << "  |  " << this->board[17]->getLandSymbol() << this->board[17]->getEdge(4)->getColor() << "  |  " << this->board[18]->getLandSymbol() << this->board[18]->getEdge(4)->getColor() << "  |\033[0m\n"
+                << "         " << this->board[16]->getVertex(2)->getConstructionSymbol() << "   " << this->board[16]->getNum() << "  " << this->board[16]->getVertex(4)->getConstructionSymbol() << "   " << this->board[17]->getNum() << "  " <<this->board[17]->getVertex(4)->getConstructionSymbol() << "   " << this->board[18]->getNum() << " " << this->board[18]->getVertex(4)->getConstructionSymbol() << "\n"
+                << "           " << this->board[16]->getEdge(2)->getColor() << "\\   " << this->board[16]->getEdge(3)->getColor() << "/  " << this->board[17]->getEdge(2)->getColor() << "\\   " << this->board[17]->getEdge(3)->getColor() << "/  " << this->board[18]->getEdge(2)->getColor() << "\\   " << this->board[18]->getEdge(3)->getColor() << "/\033[0m\n"
+                << "             " << this->board[16]->getVertex(3)->getConstructionSymbol() << "      " << this->board[17]->getVertex(3)->getConstructionSymbol() << "      " << this->board[18]->getVertex(3)->getConstructionSymbol() << "\n";
+        }
    
 }

@@ -56,7 +56,7 @@ namespace ariel
 
     Player &Catan::getPlayer(int i)
     {
-        if (i < 0 || i >= players.size())
+        if (i < 0 || i >= 3)
         {
             throw std::out_of_range("Invalid player index.");
         }
@@ -67,7 +67,7 @@ namespace ariel
     {
         int max = players[0]->getPoints();
         Player *winner = players[0];
-        for (int i = 1; i < players.size(); i++)
+        for (unsigned long i = 1; i < players.size(); i++)
         {
             if (players[i]->getPoints() > max)
             {

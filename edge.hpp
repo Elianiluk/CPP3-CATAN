@@ -28,6 +28,7 @@ namespace ariel {
         std::vector<int> getHexagons() const;
         std::vector<Edge*> getNeighbors() const;
         int getPlayerID() const;
+        std::string getColor() const;
     };
 }
 

@@ -50,4 +50,15 @@ namespace ariel {
     int Edge::getPlayerID() const {
         return playerID;
     }
+
+    std::string Edge::getColor() const {
+        if (playerID == 0)
+            return "\033[1;31m";
+        if (playerID == 1)
+            return "\033[1;34m";
+        if (playerID == 2)
+            return "\033[1;32m";
+        return "\033[1;37m";
+         
+    }
 }

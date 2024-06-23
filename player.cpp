@@ -2,50 +2,96 @@
 
 namespace ariel
 {
-    Player::Player(std::string name,int playerID)
+    Player::Player(std::string name, int playerID)
         : name(name), wood(0), brick(0), ore(0), wheat(0), wool(0), turn(false),
-          points(0), knightCount(0),resourcesNum({}),resourcesName({}),cards({}),settelmentCount(0),cityCount(0),roadCount(0),playerID(playerID) {}
-          
-    
-    void Player::placeSettlement(int HexagonNum, int vertexID, Board &board, bool firstRound) {
-        if(!firstRound){
-            if(wood==0 || brick==0 || wool==0 || wheat==0)
-                throw std::invalid_argument("You don't have enough resources to build a settlement.");
+          points(0), knightCount(0), resourcesNum({}), resourcesName({}), cards({}), settelmentCount(0), cityCount(0), roadCount(0), playerID(playerID)
+    {
+        if (playerID == 0)
+            color = 1;
+        if (playerID == 1)
+            color = 2;
+        if (playerID == 2)
+            color = 3;
+    }
+
+    std::string Player::getColor()
+    {
+        if (playerID == 0)
+            return "\033[1;31m";
+        if (playerID == 1)
+            return "\033[1;34m";
+        if (playerID == 2)
+            return "\033[1;32m";
+        return "\033[1;37m";
+    }
+
+    int Player::getPlayerID()
+    {
+        return playerID;
+    }
+    void Player::placeSettlement(Board &board, bool firstRound)
+    {
+        if (!firstRound)
+        {
+            if (wood == 0 || brick == 0 || wool == 0 || wheat == 0)
+            {
+                std::cout << ("You don't have enough resources to build a settlement.") << std::endl;
+                return;
+            }
             wood--;
             brick--;
             wool--;
             wheat--;
         }
-        if (turn == false) {
-            throw std::invalid_argument("It's not your turn.");
+
+        int HexagonNum;
+        int vertexID;
+        std::cout << "Enter the hexagon number and vertex ID for building a settelment: ";
+        std::cin >> HexagonNum >> vertexID;
+
+        if (turn == false)
+        {
+            std::cout << ("It's not your turn.") << std::endl;
         }
-        if (vertexID < 0 || vertexID > 5) {
-            throw std::invalid_argument("Invalid vertex ID.");
+        if (vertexID < 0 || vertexID > 5)
+        {
+            std::cout << ("Invalid vertex ID.") << std::endl;
+            return;
         }
-        if (HexagonNum < 0 || HexagonNum > 18) {
-            throw std::invalid_argument("Invalid hexagon number.");
+        if (HexagonNum < 0 || HexagonNum > 18)
+        {
+            std::cout << ("Invalid hexagon number.") << std::endl;
+            return;
         }
 
-        Hexagon* hex = board.getHexagon(HexagonNum); // Assuming Board has a getHexagon method
-        if (!hex) {
-            throw std::invalid_argument("Hexagon not found.");
+        Hexagon *hex = board.getHexagon(HexagonNum); // Assuming Board has a getHexagon method
+        if (!hex)
+        {
+            std::cout << ("Hexagon not found.") << std::endl;
+            return;
         }
 
-        Vertex* vertex = hex->getVertex(vertexID);
-        if (!vertex) {
-            throw std::invalid_argument("Vertex not found.");
+        Vertex *vertex = hex->getVertex(vertexID);
+        if (!vertex)
+        {
+            std::cout << ("Vertex not found.") << std::endl;
+            return;
         }
 
-        std::vector<Vertex*> vertices = vertex->getNeighbors();
-        for (Vertex* v : vertices) {
-            if(!v)
+        std::vector<Vertex *> vertices = vertex->getNeighbors();
+        for (Vertex *v : vertices)
+        {
+            if (!v)
                 continue;
-            if (v->hasSettlement()) {
-                throw std::invalid_argument("Cannot place a settlement next to another settlement.");
+            if (v->hasSettlement())
+            {
+                std::cout << ("Cannot place a settlement next to another settlement.") << std::endl;
+                return;
             }
         }
 
-        if (vertex->hasSettlement()) {
+        if (vertex->hasSettlement())
+        {
             std::cout << "Vertex " << vertexID << " already has a settlement." << std::endl;
             return;
         }
@@ -54,143 +100,213 @@ namespace ariel
         std::cout << "Settlement created at vertex " << vertex->getNum() << " for " << name << "." << std::endl;
         addPoints(1);
 
-        if(!firstRound)
+        if (!firstRound)
             return;
 
         // Add resources
         std::vector<int> resources = vertex->getHexagons();
-        for (int hexID : resources) {
-            if(!resourcesNumContains(hexID) || !resourcesNameContains(board.getHexagon(hexID)->getType())){
+        for (int hexID : resources)
+        {
+            if (!resourcesNumContains(hexID) || !resourcesNameContains(board.getHexagon(hexID)->getType()))
+            {
                 resourcesNum.push_back(hexID);
                 resourcesName.push_back(board.getHexagon(hexID)->getType());
             }
-            Hexagon* hex = board.getHexagon(hexID);
-            if (!hex) {
-                throw std::invalid_argument("Hexagon not found.");
+            Hexagon *hex = board.getHexagon(hexID);
+            if (!hex)
+            {
+                std::cout << ("Hexagon not found.") << std::endl;
+                return;
             }
-            std::cout << "Hexagon " << hexID << " has " << hex->getType() << " resources." <<"with hexId:" << hexID << "name:" << hex->getName() << std::endl;
+            std::cout << "Hexagon " << hexID << " has " << hex->getType() << " resources." << "with hexId:" << hexID << "name:" << hex->getName() << std::endl;
             std::string type = hex->getType();
-            if (type == "wood") {
+            if (type == "wood")
+            {
                 wood++;
-            } else if (type == "ore") {
+            }
+            else if (type == "ore")
+            {
                 ore++;
-            } else if (type == "brick") {
+            }
+            else if (type == "brick")
+            {
                 brick++;
-            } else if (type == "wheat") {
+            }
+            else if (type == "wheat")
+            {
                 wheat++;
-            } else if (type == "wool") {
+            }
+            else if (type == "wool")
+            {
                 wool++;
-            } else {
-                
             }
         }
         settelmentCount++;
     }
 
-    void Player::placeRoad(int HexagonNum, int edgeID, Board &board,bool firstRound) {
-        if(!firstRound){
-            if(wood==0 || brick==0)
-                throw std::invalid_argument("You don't have enough resources to build a road.");
+    void Player::placeRoad(Board &board, bool firstRound, bool card)
+    {
+        if (!firstRound && !card)
+        {
+            if (wood == 0 || brick == 0)
+            {
+                std::cout << ("You don't have enough resources to build a road.") << std::endl;
+                return;
+            }
             wood--;
             brick--;
         }
-        if (turn == false) {
-            throw std::invalid_argument("It's not your turn.");
+
+        int HexagonNum;
+        int edgeID;
+        std::cout << "Enter the hexagon number and edge ID for building a road: ";
+        std::cin >> HexagonNum >> edgeID;
+
+        if (turn == false)
+        {
+            std::cout << ("It's not your turn.") << std::endl;
+            return;
         }
-        if (edgeID < 0 || edgeID > 5) {
-            throw std::invalid_argument("Invalid edge ID.");
+        if (edgeID < 0 || edgeID > 5)
+        {
+            std::cout << ("Invalid edge ID.") << std::endl;
+            return;
         }
-        if (HexagonNum < 0 || HexagonNum > 18) {
-            throw std::invalid_argument("Invalid hexagon number.");
+        if (HexagonNum < 0 || HexagonNum > 18)
+        {
+            std::cout << ("Invalid hexagon number.") << std::endl;
+            return;
         }
 
-        Hexagon* hex = board.getHexagon(HexagonNum); // Assuming Board has a getHexagon method
-        if (!hex) {
-            throw std::invalid_argument("Hexagon not found.");
+        Hexagon *hex = board.getHexagon(HexagonNum); // Assuming Board has a getHexagon method
+        if (!hex)
+        {
+            std::cout << ("Hexagon not found.") << std::endl;
+            return;
         }
 
-        Edge* edge = hex->getEdge(edgeID);
-        if (!edge) {
-            throw std::invalid_argument("Edge not found.");
+        Edge *edge = hex->getEdge(edgeID);
+        if (!edge)
+        {
+            std::cout << ("Edge not found.") << std::endl;
+            return;
         }
 
-        std::vector<Edge*> edges = edge->getNeighbors();
-        for (Edge* e : edges) {
-            if(!e)
+        std::vector<Edge *> edges = edge->getNeighbors();
+        for (Edge *e : edges)
+        {
+            if (!e)
                 continue;
-            if (e->hasRoad()) {
-                throw std::invalid_argument("Cannot place a road next to another road.");
+            if (e->hasRoad())
+            {
+                std::cout << ("Cannot place a road next to another road.") << std::endl;
+                return;
             }
         }
 
-        if (edge->hasRoad()) {
+        if (edge->hasRoad())
+        {
             std::cout << "Edge " << edgeID << " already has a road." << std::endl;
             return;
         }
 
         edge->setRoad(playerID);
         std::cout << "Road created at edge " << edge->getNum() << " for " << name << "." << std::endl;
-        
-        if(!firstRound)
+
+        if (!firstRound || card)
             return;
-        
+
         std::vector<int> resources = edge->getHexagons();
-        for (int hexID : resources) {
-            if(!resourcesNumContains(hexID) || !resourcesNameContains(board.getHexagon(hexID)->getType())){
+        for (int hexID : resources)
+        {
+            if (!resourcesNumContains(hexID) || !resourcesNameContains(board.getHexagon(hexID)->getType()))
+            {
                 resourcesNum.push_back(hexID);
                 resourcesName.push_back(board.getHexagon(hexID)->getType());
             }
-            Hexagon* hex = board.getHexagon(hexID);
-            if (!hex) {
-                throw std::invalid_argument("Hexagon not found.");
+            Hexagon *hex = board.getHexagon(hexID);
+            if (!hex)
+            {
+                std::cout << ("Hexagon not found.") << std::endl;
+                return;
             }
-            std::cout << "Hexagon " << hexID << " has " << hex->getType() << " resources." <<"with hexId:" << hexID << "name:" << hex->getName() << std::endl;
+            std::cout << "Hexagon " << hexID << " has " << hex->getType() << " resources." << "with hexId:" << hexID << "name:" << hex->getName() << std::endl;
             std::string type = hex->getType();
-            if (type == "wood") {
+            if (type == "wood")
+            {
                 wood++;
-            } else if (type == "ore") {
+            }
+            else if (type == "ore")
+            {
                 ore++;
-            } else if (type == "brick") {
+            }
+            else if (type == "brick")
+            {
                 brick++;
-            } else if (type == "wheat") {
+            }
+            else if (type == "wheat")
+            {
                 wheat++;
-            } else if (type == "wool") {
+            }
+            else if (type == "wool")
+            {
                 wool++;
-            } else {
-                
             }
         }
         roadCount++;
     }
 
-    void Player::placeCity(int HexagonNum, int vertexID, Board &board) {
-        if(wheat<2 || ore<3)
-            throw std::invalid_argument("You don't have enough resources to build a city.");
-        if (turn == false) {
-            throw std::invalid_argument("It's not your turn.");
+    void Player::placeCity(Board &board)
+    {
+        if (wheat < 2 || ore < 3)
+        {
+            std::cout << ("You don't have enough resources to build a city.") << std::endl;
+            return;
         }
-        if (vertexID < 0 || vertexID > 5) {
-            throw std::invalid_argument("Invalid vertex ID.");
-        }
-        if (HexagonNum < 0 || HexagonNum > 18) {
-            throw std::invalid_argument("Invalid hexagon number.");
-        }
-
-        Hexagon* hex = board.getHexagon(HexagonNum); // Assuming Board has a getHexagon method
-        if (!hex) {
-            throw std::invalid_argument("Hexagon not found.");
+        if (turn == false)
+        {
+            std::cout << ("It's not your turn.") << std::endl;
+            return;
         }
 
-        Vertex* vertex = hex->getVertex(vertexID);
-        if (!vertex) {
-            throw std::invalid_argument("Vertex not found.");
+        int HexagonNum;
+        int vertexID;
+        std::cout << "Enter the hexagon number and vertex ID for building a city: ";
+        std::cin >> HexagonNum >> vertexID;
+
+        if (vertexID < 0 || vertexID > 5)
+        {
+            std::cout << ("Invalid vertex ID.") << std::endl;
+            return;
+        }
+        if (HexagonNum < 0 || HexagonNum > 18)
+        {
+            std::cout << ("Invalid hexagon number.") << std::endl;
+            return;
         }
 
-        if (!vertex->hasSettlement()) {
-            throw std::invalid_argument("Cannot place a city without a settlement.");
+        Hexagon *hex = board.getHexagon(HexagonNum); // Assuming Board has a getHexagon method
+        if (!hex)
+        {
+            std::cout << ("Hexagon not found.") << std::endl;
+            return;
         }
 
-        if (vertex->hasCity()) {
+        Vertex *vertex = hex->getVertex(vertexID);
+        if (!vertex)
+        {
+            std::cout << ("Vertex not found.") << std::endl;
+            return;
+        }
+
+        if (!vertex->hasSettlement())
+        {
+            std::cout << ("Cannot place a city without a settlement.") << std::endl;
+            return;
+        }
+
+        if (vertex->hasCity())
+        {
             std::cout << "Vertex " << vertexID << " already has a city." << std::endl;
             return;
         }
@@ -203,115 +319,170 @@ namespace ariel
         settelmentCount--;
 
         std::vector<int> resources = vertex->getHexagons();
-        for (int hexID : resources) {
-        if(!resourcesNumContains(hexID) || !resourcesNameContains(board.getHexagon(hexID)->getType())){
+        for (int hexID : resources)
+        {
+            if (!resourcesNumContains(hexID) || !resourcesNameContains(board.getHexagon(hexID)->getType()))
+            {
                 resourcesNum.push_back(hexID);
                 resourcesName.push_back(board.getHexagon(hexID)->getType());
             }
         }
     }
 
-    bool Player::resourcesNumContains(int hexID){
-        for(size_t i=0;i<resourcesNum.size();i++){
-            if(resourcesNum[i]==hexID){
+    bool Player::resourcesNumContains(int hexID)
+    {
+        for (size_t i = 0; i < resourcesNum.size(); i++)
+        {
+            if (resourcesNum[i] == hexID)
+            {
                 return true;
             }
         }
         return false;
     }
 
-    bool Player::resourcesNameContains(std::string type){
-        for(size_t i=0;i<resourcesName.size();i++){
-            if(resourcesName[i]==type){
+    bool Player::resourcesNameContains(std::string type)
+    {
+        for (size_t i = 0; i < resourcesName.size(); i++)
+        {
+            if (resourcesName[i] == type)
+            {
                 return true;
             }
         }
         return false;
     }
 
-    void Player::trade(Player other,std::string s1,std::string s2,int amount1,int amount2){
-        if(turn==false){
-            throw std::invalid_argument("It's not your turn.");
-        }
-        if(other.getName()==name){
-            throw std::invalid_argument("You can't trade with yourself.");
-        }
-        if(amount1<0 || amount2<0){
-            throw std::invalid_argument("You can't trade negative amount.");
+    void Player::trade(Player &other)
+    {
+        std::map<std::string, int> offer;
+        std::map<std::string, int> request;
+
+        int numItems;
+        std::string resource;
+        int quantity;
+
+        std::cout << name << ", what do you want to offer?" << std::endl;
+        std::cout << "How many different resources are you offering? ";
+        std::cin >> numItems;
+
+        for (int i = 0; i < numItems; ++i)
+        {
+            std::cout << "Enter resource and quantity (e.g., wood 2): ";
+            std::cin >> resource >> quantity;
+            offer[resource] = quantity;
         }
 
-        if(s1=="wood"){
-            if(wood<amount1){
-                throw std::invalid_argument("You don't have enough wood.");
-            }
-            else
-                wood-=amount1;
+        std::cout << name << ", what do you want in return?" << std::endl;
+        std::cout << "How many different resources are you requesting? ";
+        std::cin >> numItems;
+
+        for (int i = 0; i < numItems; ++i)
+        {
+            std::cout << "Enter resource and quantity (e.g., brick 1): ";
+            std::cin >> resource >> quantity;
+            request[resource] = quantity;
         }
-        if(s1=="ore"){
-            if(wood<amount1){
-                throw std::invalid_argument("You don't have enough ore.");
+
+        std::cout << other.getName() << ", do you accept this trade? (yes/no): ";
+        std::string response;
+        std::cin >> response;
+
+        if (response == "yes")
+        {
+            // Check if the current player has enough resources to offer
+            for (const auto &item : offer)
+            {
+                if ((item.first == "wood" && wood < item.second) ||
+                    (item.first == "brick" && brick < item.second) ||
+                    (item.first == "ore" && ore < item.second) ||
+                    (item.first == "wheat" && wheat < item.second) ||
+                    (item.first == "wool" && wool < item.second))
+                {
+                    std::cout << "Trade failed: " << name << " does not have enough " << item.first << "." << std::endl;
+                    return;
+                }
             }
-            else
-                ore-=amount1;
-        }
-        if(s1=="brick"){
-            if(brick<amount1){
-                throw std::invalid_argument("You don't have enough brick.");
+
+            // Check if the other player has enough resources to fulfill the request
+            for (const auto &item : request)
+            {
+                if ((item.first == "wood" && other.wood < item.second) ||
+                    (item.first == "brick" && other.brick < item.second) ||
+                    (item.first == "ore" && other.ore < item.second) ||
+                    (item.first == "wheat" && other.wheat < item.second) ||
+                    (item.first == "wool" && other.wool < item.second))
+                {
+                    std::cout << "Trade failed: " << other.getName() << " does not have enough " << item.first << "." << std::endl;
+                    return;
+                }
             }
-            else
-                brick-=amount1;
-        }
-        if(s1=="wheat"){
-            if(wheat<amount1){
-                throw std::invalid_argument("You don't have enough wheat.");
+
+            // Execute the trade
+            for (const auto &item : offer)
+            {
+                if (item.first == "wood")
+                {
+                    wood -= item.second;
+                    other.wood += item.second;
+                }
+                else if (item.first == "brick")
+                {
+                    brick -= item.second;
+                    other.brick += item.second;
+                }
+                else if (item.first == "ore")
+                {
+                    ore -= item.second;
+                    other.ore += item.second;
+                }
+                else if (item.first == "wheat")
+                {
+                    wheat -= item.second;
+                    other.wheat += item.second;
+                }
+                else if (item.first == "wool")
+                {
+                    wool -= item.second;
+                    other.wool += item.second;
+                }
             }
-            else
-                wheat-=amount1;
-        }
-        if(s1=="wool"){
-            if(wool<amount1){
-                throw std::invalid_argument("You don't have enough wool.");
+
+            for (const auto &item : request)
+            {
+                if (item.first == "wood")
+                {
+                    other.wood -= item.second;
+                    wood += item.second;
+                }
+                else if (item.first == "brick")
+                {
+                    other.brick -= item.second;
+                    brick += item.second;
+                }
+                else if (item.first == "ore")
+                {
+                    other.ore -= item.second;
+                    ore += item.second;
+                }
+                else if (item.first == "wheat")
+                {
+                    other.wheat -= item.second;
+                    wheat += item.second;
+                }
+                else if (item.first == "wool")
+                {
+                    other.wool -= item.second;
+                    wool += item.second;
+                }
             }
-            else
-                wool-=amount1;
+
+            std::cout << "Trade successful!" << std::endl;
         }
-        if(s2=="wood"){
-            if(other.wood<amount2){
-                throw std::invalid_argument("The other player doesn't have enough wood.");
-            }
-            else
-                other.wood-=amount2;
+        else
+        {
+            std::cout << "Trade declined." << std::endl;
         }
-        if(s2=="ore"){
-            if(other.ore<amount2){
-                throw std::invalid_argument("The other player doesn't have enough ore.");
-            }
-            else
-                other.ore-=amount2;
-        }
-        if(s2=="brick"){
-            if(other.brick<amount2){
-                throw std::invalid_argument("The other player doesn't have enough brick.");
-            }
-            else
-                other.brick-=amount2;
-        }
-        if(s2=="wheat"){
-            if(other.wheat<amount2){
-                throw std::invalid_argument("The other player doesn't have enough wheat.");
-            }
-            else
-                other.wheat-=amount2;
-        }
-        if(s2=="wool"){
-            if(other.wool<amount2){
-                throw std::invalid_argument("The other player doesn't have enough wool.");
-            }
-            else
-                other.wool-=amount2;
-        }
-        std::string tradeDetails="p1 trade "+std::to_string(amount1)+" "+s1+" for "+std::to_string(amount2)+" "+s2+" with p2";
-        std::cout << tradeDetails << std::endl;
     }
 
     std::string Player::getName()
@@ -336,29 +507,44 @@ namespace ariel
 
     void Player::changeTurn()
     {
-        turn=!turn;
+        turn = !turn;
+        if (turn == true)
+        {
+            std::cout << name << "'s turn" << std::endl;
+        }
+        else
+        {
+            std::cout << name << "'s turn ended" << std::endl;
+        }
+        if (points >= 10)
+        {
+            std::cout << name << " wins!" << std::endl;
+            exit(0);
+        }
+        // std::cout << "there is no winner yet" << std::endl;
     }
 
     int Player::rollDice()
     {
-        if(turn==false){
-            throw std::invalid_argument("It's not your turn.");
-        }
-
-        // int dice = rand() % 6 + 1 + rand() % 6 + 1;
-        // std::cout << dice << std::endl;
-        // return dice;
-        return 12;
+        int dice = rand() % 6 + 1 + rand() % 6 + 1;
+        std::cout << dice << std::endl;
+        return dice;
+        // return 12;
     }
 
-    void Player::buyCard() {
-        if (turn == false) {
-            throw std::invalid_argument("It's not your turn.");
+    void Player::buyCard()
+    {
+        if (turn == false)
+        {
+            std::cout << ("It's not your turn.") << std::endl;
+            return;
         }
 
         // Cost of a development card: 1 wheat, 1 ore, 1 wool
-        if (wheat < 1 || ore < 1 || wool < 1) {
-            throw std::invalid_argument("You don't have enough resources to buy a development card.");
+        if (wheat < 1 || ore < 1)
+        {
+            std::cout << ("You don't have enough resources to buy a development card.") << std::endl;
+            return;
         }
 
         // Randomly choose a card
@@ -366,216 +552,307 @@ namespace ariel
         int randIndex = rand() % 5;
         std::string cardName = names[randIndex]; // cardName = names[rand() % 5
 
-
         // Deduct the resources
         wheat -= 1;
         ore -= 1;
         wool -= 1;
 
         // Create the card based on the cardName
-        if (cardName == "Monopoly") {
+        if (cardName == "Monopoly")
+        {
             DevelopmentCard card(DevelopmentCard::Monopoly);
             cards.push_back(card);
-        } else if (cardName == "Road Building") {
+        }
+        else if (cardName == "Road Building")
+        {
             DevelopmentCard card(DevelopmentCard::RoadBuilding);
             cards.push_back(card);
-        } else if (cardName == "Year of Plenty") {
+        }
+        else if (cardName == "Year of Plenty")
+        {
             DevelopmentCard card(DevelopmentCard::YearOfPlenty);
             cards.push_back(card);
-        } else if (cardName == "Knight") {
-            if (KnightCard::getCount() >= 3) {
+        }
+        else if (cardName == "Knight")
+        {
+            if (KnightCard::getCount() >= 3)
+            {
                 throw std::runtime_error("Cannot create more than 3 Knight Cards.");
             }
             KnightCard card;
             knightCount++;
             cards.push_back(card);
-        } else if (cardName == "Victory Poines") {
+        }
+        else if (cardName == "Victory Poines")
+        {
             VictoryPointCard card;
             cards.push_back(card);
-        } else {
-            throw std::invalid_argument("Invalid card name.");
+        }
+        else
+        {
+            std::cout << ("Invalid card name.") << std::endl;
+            return;
         }
 
         std::cout << name << " bought a " << cardName << " card." << std::endl;
     }
 
-    void Player::playCard(std::string cardType,std::string type,std::string type2,Player other1,Player other2) {
-        if (turn == false) {
-            throw std::invalid_argument("It's not your turn.");
+    void Player::playCard(std::string cardType, Player &other1, Player &other2, Board &board)
+    {
+        if (turn == false)
+        {
+            std::cout << ("It's not your turn.") << std::endl;
+            return;
         }
 
-        if (cards.size() == 0) {
-            throw std::invalid_argument("You don't have any cards to play.");
+        if (cards.size() == 0)
+        {
+            std::cout << ("You don't have any cards to play.") << std::endl;
+            return;
         }
 
-        if(cardType!="Monopoly" && cardType!="Road Building" && cardType!="Year of Plenty" && cardType!="Knight" && cardType!="Victory Point"){
-            throw std::invalid_argument("Invalid card type.");
+        if (cardType != "Monopoly" && cardType != "Road Building" && cardType != "Year of Plenty" && cardType != "Knight" && cardType != "Victory Point")
+        {
+            std::cout << ("Invalid card type.") << std::endl;
+            return;
         }
 
-        if(cardType=="Knight" && knightCount==0){
-            throw std::invalid_argument("You don't have any Knight cards.");
+        if (cardType == "Knight" && knightCount == 0)
+        {
+            std::cout << ("You don't have any Knight cards.") << std::endl;
+            return;
         }
 
-        if(cardType=="Monopoly"){
-            bool monopoly=false;
-            for(unsigned long i=0;i<cards.size();i++){
-                if(cards[i].getType()=="Monopoly"){
-                    monopoly=true;
+        if (cardType == "Monopoly")
+        {
+            bool monopoly = false;
+            for (unsigned long i = 0; i < cards.size(); i++)
+            {
+                if (cards[i].getType() == "Monopoly")
+                {
+                    monopoly = true;
                     break;
                 }
             }
-            if(monopoly==false){
-                throw std::invalid_argument("You don't have any Monopoly cards.");
+            if (monopoly == false)
+            {
+                std::cout<< ("You don't have any Monopoly cards.") << std::endl;
+                return;
             }
         }
 
-        if(cardType=="Road Building"){
-            bool roadBuilding=false;
-            for(unsigned long i=0;i<cards.size();i++){
-                if(cards[i].getType()=="Road Building"){
-                    roadBuilding=true;
+        if (cardType == "Road Building")
+        {
+            bool roadBuilding = false;
+            for (unsigned long i = 0; i < cards.size(); i++)
+            {
+                if (cards[i].getType() == "Road Building")
+                {
+                    roadBuilding = true;
                     break;
                 }
             }
-            if(roadBuilding==false){
-                throw std::invalid_argument("You don't have any Road Building cards.");
+            if (roadBuilding == false)
+            {
+                std::cout<<("You don't have any Road Building cards.") << std::endl;
+                return;
             }
         }
 
-        if(cardType=="Year of Plenty"){
-            bool yearOfPlenty=false;
-            for(unsigned long i=0;i<cards.size();i++){
-                if(cards[i].getType()=="Year of Plenty"){
-                    yearOfPlenty=true;
+        if (cardType == "Year of Plenty")
+        {
+            bool yearOfPlenty = false;
+            for (unsigned long i = 0; i < cards.size(); i++)
+            {
+                if (cards[i].getType() == "Year of Plenty")
+                {
+                    yearOfPlenty = true;
                     break;
                 }
             }
-            if(yearOfPlenty==false){
-                throw std::invalid_argument("You don't have any Year of Plenty cards.");
+            if (yearOfPlenty == false)
+            {
+                std::cout<<("You don't have any Year of Plenty cards.") << std::endl;
+                return;
             }
         }
 
-        if(cardType=="Victory Point"){
-            bool victoryPoint=false;
-            for(unsigned long i=0;i<cards.size();i++){
-                if(cards[i].getType()=="Victory Point"){
-                    victoryPoint=true;
+        if (cardType == "Victory Point")
+        {
+            bool victoryPoint = false;
+            for (unsigned long i = 0; i < cards.size(); i++)
+            {
+                if (cards[i].getType() == "Victory Point")
+                {
+                    victoryPoint = true;
                     break;
                 }
             }
-            if(victoryPoint==false){
-                throw std::invalid_argument("You don't have any Victory Point cards.");
+            if (victoryPoint == false)
+            {
+                std::cout<<("You don't have any Victory Point cards.") << std::endl;
+                return;
             }
         }
 
-        if(cardType=="Knight"){
-            bool knight=false;
-            for(unsigned long i=0;i<cards.size();i++){
-                if(cards[i].getType()=="Knight"){
-                    knight=true;
+        if (cardType == "Knight")
+        {
+            bool knight = false;
+            for (unsigned long i = 0; i < cards.size(); i++)
+            {
+                if (cards[i].getType() == "Knight")
+                {
+                    knight = true;
                     break;
                 }
             }
-            if(knight==false){
-                throw std::invalid_argument("You don't have any Knight cards.");
+            if (knight == false)
+            {
+                std::cout<<("You don't have any Knight cards.") << std::endl;
+                return;
             }
         }
 
-        int inedx=0;
-        for(unsigned long i=0;i<cards.size();i++){
-            if(cards[i].getType()==cardType){
-                inedx=i;
+        int inedx = 0;
+        for (unsigned long i = 0; i < cards.size(); i++)
+        {
+            if (cards[i].getType() == cardType)
+            {
+                inedx = i;
                 break;
             }
         }
 
-        if (cardType == "Monopoly") {
-            std::cout << name << " played a Monopoly card." << std::endl;
-            if(type=="wood"){
+        if (cardType == "Monopoly")
+        {
+            std::cout << name << " played a Monopoly card. choose card" << std::endl;
+            std::string type;
+            std::cin >> type;
+            if (type == "wood")
+            {
                 wood++;
                 other1.wood--;
                 other2.wood--;
             }
-            if(type=="ore"){
+            if (type == "ore")
+            {
                 ore++;
                 other1.ore--;
                 other2.ore--;
             }
-            if(type=="brick"){
+            if (type == "brick")
+            {
                 brick++;
                 other1.brick--;
                 other2.brick--;
             }
-            if(type=="wheat"){
+            if (type == "wheat")
+            {
                 wheat++;
                 other1.wheat--;
                 other2.wheat--;
             }
-            if(type=="wool"){
+            if (type == "wool")
+            {
                 wool++;
                 other1.wool--;
                 other2.wool--;
             }
-        } else if (cardType == "Road Building") {
+            else{
+                std::cout<<("Invalid resource type in used card.") << std::endl;
+                return;
+            }
+        }
+        else if (cardType == "Road Building")
+        {
             std::cout << name << " played a Road Building card." << std::endl;
-        } else if (cardType == "Year of Plenty") {
+            this->placeRoad(board, false, true);
+            this->placeRoad(board, false, true);
+        }
+        else if (cardType == "Year of Plenty")
+        {
             std::cout << name << " played a Year of Plenty card." << std::endl;
-            if(type2=="wood" || type=="wood"){
+            std::string type2, type;
+            std::cin >> type2;
+            std::cin >> type;
+            if (type2 == "wood" || type == "wood")
+            {
                 wood++;
             }
-            if(type2=="ore" || type=="ore"){
+            if (type2 == "ore" || type == "ore")
+            {
                 ore++;
             }
-            if(type2=="brick" || type=="brick"){
+            if (type2 == "brick" || type == "brick")
+            {
                 brick++;
             }
-            if(type2=="wheat" || type=="wheat"){
+            if (type2 == "wheat" || type == "wheat")
+            {
                 wheat++;
             }
-            if(type2=="wool" || type=="wool"){
+            if (type2 == "wool" || type == "wool")
+            {
                 wool++;
             }
-        // } else if (cardType == "Knight") {
-        //     std::cout << name << " played a Knight card." << std::endl;
-        } else if (cardType == "Victory Point") {
+            // } else if (cardType == "Knight") {
+            //     std::cout << name << " played a Knight card." << std::endl;
+        }
+        else if (cardType == "Victory Point")
+        {
             std::cout << name << " played a Victory Point card." << std::endl;
             addPoints(1);
-        } else {
-            throw std::invalid_argument("Invalid card type.");
+        }
+        else
+        {
+            std::cout<<("Invalid card type.") << std::endl;
+            return;
         }
         cards.erase(cards.begin() + inedx);
     }
 
-    void Player::printResources() {
+    void Player::printResources()
+    {
         std::cout << "Resources for " << name << ":" << std::endl;
         std::cout << "Wood: " << wood << std::endl;
         std::cout << "Ore: " << ore << std::endl;
         std::cout << "Brick: " << brick << std::endl;
         std::cout << "Wheat: " << wheat << std::endl;
         std::cout << "Wool: " << wool << std::endl;
-
     }
 
-    std::vector <int> Player::getResourcesNum() const{
+    std::vector<int> Player::getResourcesNum() const
+    {
         return resourcesNum;
     }
 
-    void Player::addResource(std::string type,int n){
-        if(type=="wood"){
-            wood+=n;
+    void Player::addResource(std::string type, int n)
+    {
+        if (type == "wood")
+        {
+            wood += n;
         }
-        if(type=="ore"){
-            ore+=n;
+        if (type == "ore")
+        {
+            ore += n;
         }
-        if(type=="brick"){
-            brick+=n;
+        if (type == "brick")
+        {
+            brick += n;
         }
-        if(type=="wheat"){
-            wheat+=n;
+        if (type == "wheat")
+        {
+            wheat += n;
         }
-        if(type=="wool"){
-            wool+=n;
+        if (type == "wool")
+        {
+            wool += n;
         }
         std::cout << "Resource added to " << name << "." << std::endl;
+    }
+
+    bool Player::getTurn()
+    {
+        return turn;
     }
 } // namespace ariel

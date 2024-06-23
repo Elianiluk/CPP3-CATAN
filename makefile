@@ -7,7 +7,7 @@ SRCS := $(wildcard *.cpp)
 OBJS := $(SRCS:.cpp=.o)
 
 # Target executable
-TARGET := myprogram
+TARGET := catan
 
 # Default target
 all: $(TARGET)
