@@ -25,25 +25,17 @@ namespace ariel
         return "\033[1;37m";
     }
 
+    int Player::getKnightCount()
+    {
+        return knightCount;
+    }
+
     int Player::getPlayerID()
     {
         return playerID;
     }
     void Player::placeSettlement(Board &board, bool firstRound)
     {
-        if (!firstRound)
-        {
-            if (wood == 0 || brick == 0 || wool == 0 || wheat == 0)
-            {
-                std::cout << ("You don't have enough resources to build a settlement.") << std::endl;
-                return;
-            }
-            wood--;
-            brick--;
-            wool--;
-            wheat--;
-        }
-
         int HexagonNum;
         int vertexID;
         std::cout << "Enter the hexagon number and vertex ID for building a settelment: ";
@@ -56,11 +48,15 @@ namespace ariel
         if (vertexID < 0 || vertexID > 5)
         {
             std::cout << ("Invalid vertex ID.") << std::endl;
+            std::cout << "try again" << std::endl;
+            placeSettlement(board, firstRound);
             return;
         }
         if (HexagonNum < 0 || HexagonNum > 18)
         {
             std::cout << ("Invalid hexagon number.") << std::endl;
+            std::cout << "try again" << std::endl;
+            placeSettlement(board, firstRound);
             return;
         }
 
@@ -68,6 +64,8 @@ namespace ariel
         if (!hex)
         {
             std::cout << ("Hexagon not found.") << std::endl;
+            std::cout << "try again" << std::endl;
+            placeSettlement(board, firstRound);
             return;
         }
 
@@ -75,6 +73,8 @@ namespace ariel
         if (!vertex)
         {
             std::cout << ("Vertex not found.") << std::endl;
+            std::cout << "try again" << std::endl;
+            placeSettlement(board, firstRound);
             return;
         }
 
@@ -86,6 +86,8 @@ namespace ariel
             if (v->hasSettlement())
             {
                 std::cout << ("Cannot place a settlement next to another settlement.") << std::endl;
+                std::cout << "try again" << std::endl;
+                placeSettlement(board, firstRound);
                 return;
             }
         }
@@ -93,7 +95,22 @@ namespace ariel
         if (vertex->hasSettlement())
         {
             std::cout << "Vertex " << vertexID << " already has a settlement." << std::endl;
+            std::cout << "try again" << std::endl;
+            placeSettlement(board, firstRound);
             return;
+        }
+
+        if (!firstRound)
+        {
+            if (wood == 0 || brick == 0 || wool == 0 || wheat == 0)
+            {
+                std::cout << ("You don't have enough resources to build a settlement.") << std::endl;
+                return;
+            }
+            wood--;
+            brick--;
+            wool--;
+            wheat--;
         }
 
         vertex->setSettlement(playerID);
@@ -146,17 +163,6 @@ namespace ariel
 
     void Player::placeRoad(Board &board, bool firstRound, bool card)
     {
-        if (!firstRound && !card)
-        {
-            if (wood == 0 || brick == 0)
-            {
-                std::cout << ("You don't have enough resources to build a road.") << std::endl;
-                return;
-            }
-            wood--;
-            brick--;
-        }
-
         int HexagonNum;
         int edgeID;
         std::cout << "Enter the hexagon number and edge ID for building a road: ";
@@ -170,11 +176,15 @@ namespace ariel
         if (edgeID < 0 || edgeID > 5)
         {
             std::cout << ("Invalid edge ID.") << std::endl;
+            std::cout << "try again" << std::endl;
+            placeRoad(board, firstRound, card);
             return;
         }
         if (HexagonNum < 0 || HexagonNum > 18)
         {
             std::cout << ("Invalid hexagon number.") << std::endl;
+            std::cout << "try again" << std::endl;
+            placeRoad(board, firstRound, card);
             return;
         }
 
@@ -182,6 +192,8 @@ namespace ariel
         if (!hex)
         {
             std::cout << ("Hexagon not found.") << std::endl;
+            std::cout << "try again" << std::endl;
+            placeRoad(board, firstRound, card);
             return;
         }
 
@@ -189,6 +201,8 @@ namespace ariel
         if (!edge)
         {
             std::cout << ("Edge not found.") << std::endl;
+            std::cout << "try again" << std::endl;
+            placeRoad(board, firstRound, card);
             return;
         }
 
@@ -200,14 +214,40 @@ namespace ariel
             if (e->hasRoad())
             {
                 std::cout << ("Cannot place a road next to another road.") << std::endl;
+                std::cout << "try again" << std::endl;
+                placeRoad(board, firstRound, card);
                 return;
             }
+        }
+
+        Vertex *vertex1 = edge->getVertex1();
+        Vertex *vertex2 = edge->getVertex2();
+
+        if (!vertex1->hasSettlement() && !vertex2->hasSettlement())
+        {
+            std::cout << ("Cannot place a road without a settlement.") << std::endl;
+            std::cout << "try again" << std::endl;
+            placeRoad(board, firstRound, card);
+            return;
         }
 
         if (edge->hasRoad())
         {
             std::cout << "Edge " << edgeID << " already has a road." << std::endl;
+            std::cout << "try again" << std::endl;
+            placeRoad(board, firstRound, card);
             return;
+        }
+
+        if (!firstRound && !card)
+        {
+            if (wood == 0 || brick == 0)
+            {
+                std::cout << ("You don't have enough resources to build a road.") << std::endl;
+                return;
+            }
+            wood--;
+            brick--;
         }
 
         edge->setRoad(playerID);
@@ -277,11 +317,15 @@ namespace ariel
         if (vertexID < 0 || vertexID > 5)
         {
             std::cout << ("Invalid vertex ID.") << std::endl;
+            std::cout << "try again" << std::endl;
+            placeCity(board);
             return;
         }
         if (HexagonNum < 0 || HexagonNum > 18)
         {
             std::cout << ("Invalid hexagon number.") << std::endl;
+            std::cout << "try again" << std::endl;
+            placeCity(board);
             return;
         }
 
@@ -289,6 +333,8 @@ namespace ariel
         if (!hex)
         {
             std::cout << ("Hexagon not found.") << std::endl;
+            std::cout << "try again" << std::endl;
+            placeCity(board);
             return;
         }
 
@@ -296,19 +342,35 @@ namespace ariel
         if (!vertex)
         {
             std::cout << ("Vertex not found.") << std::endl;
+            std::cout << "try again" << std::endl;
+            placeCity(board);
             return;
         }
 
         if (!vertex->hasSettlement())
         {
             std::cout << ("Cannot place a city without a settlement.") << std::endl;
+            std::cout << "try again" << std::endl;
+            placeCity(board);
             return;
         }
 
         if (vertex->hasCity())
         {
             std::cout << "Vertex " << vertexID << " already has a city." << std::endl;
+            std::cout << "try again" << std::endl;
+            placeCity(board);
             return;
+        }
+        if (brick < 3 || wheat < 2)
+        {
+            std::cout << ("You don't have enough resources to build a settlement.") << std::endl;
+            return;
+        }
+        else
+        {
+            brick -= 3;
+            wheat -= 2;
         }
 
         vertex->setCity();
@@ -353,7 +415,7 @@ namespace ariel
         return false;
     }
 
-    void Player::trade(Player &other)
+    void Player::tradeRescources(Player &other)
     {
         std::map<std::string, int> offer;
         std::map<std::string, int> request;
@@ -485,6 +547,71 @@ namespace ariel
         }
     }
 
+    void Player::tradeCards(Player &other)
+    {
+        std::string card1T, card2T;
+        std::string card1, card2;
+
+        std::cout << name << ", enter the name of the card you want to give:";
+        std::cin >> card1T;
+        // std::getline(std::cin, card1);
+        if(card1T=="Monopoly")
+            card1="Monopoly";
+        if(card1T=="Road")
+            card1="Road Building";
+        if(card1T=="Year")
+            card1="Year of Plenty";
+        if(card1T=="Knight")
+            card1="Knight";
+        if(card1T=="Victory")
+            card1="Victory Point";
+        
+
+        std::cout << name << ", enter the name of the card you want to get:" << std::endl;
+        std::cin >> card2T;
+        // std::getline(std::cin, card2);
+        if(card2T=="Monopoly")
+            card2="Monopoly";
+        if(card2T=="Road")
+            card2="Road Building";
+        if(card2T=="Year")
+            card2="Year of Plenty";
+        if(card2T=="Knight")
+            card2="Knight";
+        if(card2T=="Victory")
+            card2="Victory Point";
+
+        if (!hasCard(card1))
+        {
+            std::cout << name << " does not have the card: " << card1 << std::endl;
+            return;
+        }
+
+        if (!other.hasCard(card2))
+        {
+            std::cout << other.getName() << " does not have the card: " << card2 << std::endl;
+            return;
+        }
+
+        std::cout << other.getName() << ", do you accept the trade? (" << name << "'s " << card1 << " for your " << card2 << ") (yes/no): ";
+        std::string response;
+        std::cin >> response;
+
+        if (response == "yes")
+        {
+            removeCard(card1);
+            other.removeCard(card2);
+            addCard(card2);
+            other.addCard(card1);
+
+            std::cout << "Trade successful!" << name << " traded " << card1 << " with " << other.getName() << " for " << card2 << std::endl;
+        }
+        else
+        {
+            std::cout << other.getName() << " declined the trade." << std::endl;
+        }
+    }
+
     std::string Player::getName()
     {
         return name;
@@ -493,6 +620,47 @@ namespace ariel
     void Player::addPoints(int p)
     {
         points += p;
+    }
+
+    void Player::addCard(std::string card)
+    {
+        if (card == "Monopoly")
+            cards.push_back(new ariel::DevelopmentCard(ariel::DevelopmentCard::Monopoly));
+        else if (card == "Road Building")
+            cards.push_back(new ariel::DevelopmentCard(ariel::DevelopmentCard::RoadBuilding));
+        else if (card == "Year of Plenty")
+            cards.push_back(new ariel::DevelopmentCard(ariel::DevelopmentCard::YearOfPlenty));
+        else if (card == "Knight")
+            cards.push_back(new ariel::KnightCard());
+        else if (card == "Victory Point")
+            cards.push_back(new ariel::VictoryPointCard());
+        else
+            std::cout << "Invalid card name." << std::endl;
+    }
+
+    void Player::removeCard(std::string card)
+    {
+        for (unsigned long i = 0; i < cards.size(); i++)
+        {
+            if (cards[i]->getType() == card)
+            {
+                cards.erase(cards.begin() + i);
+                return;
+            }
+        }
+        std::cout << "Card not found." << std::endl;
+    }
+
+    bool Player::hasCard(std::string card)
+    {
+        for (unsigned long i = 0; i < cards.size(); i++)
+        {
+            if (cards[i]->getType() == card)
+            {
+                return true;
+            }
+        }
+        return false;
     }
 
     void Player::printPoints()
@@ -526,7 +694,7 @@ namespace ariel
 
     int Player::rollDice()
     {
-        std::vector<int> dices = {2, 3, 4, 5, 6,7,8,9,10,11,12};
+        std::vector<int> dices = {2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12};
         unsigned seed = std::chrono::system_clock::now().time_since_epoch().count();
         std::shuffle(dices.begin(), dices.end(), std::default_random_engine(seed));
         std::cout << dices[0] << std::endl;
@@ -534,14 +702,17 @@ namespace ariel
         // return 12;
     }
 
-    void Player::buyCard() {
-        if (turn == false) {
+    void Player::buyCard()
+    {
+        if (turn == false)
+        {
             std::cout << "It's not your turn." << std::endl;
             return;
         }
 
         // Cost of a development card: 1 wheat, 1 ore, 1 wool
-        if (wheat < 1 || ore < 1 || wool < 1) {
+        if (wheat < 1 || ore < 1 || wool < 1)
+        {
             std::cout << "You don't have enough resources to buy a development card." << std::endl;
             return;
         }
@@ -562,18 +733,29 @@ namespace ariel
         wool -= 1;
 
         // Create the card based on the cardName and add to the player's cards
-        if (cardName == "Monopoly") {
+        if (cardName == "Monopoly")
+        {
             cards.push_back(new ariel::DevelopmentCard(ariel::DevelopmentCard::Monopoly));
-        } else if (cardName == "Road Building") {
+        }
+        else if (cardName == "Road Building")
+        {
             cards.push_back(new ariel::DevelopmentCard(ariel::DevelopmentCard::RoadBuilding));
-        } else if (cardName == "Year of Plenty") {
+        }
+        else if (cardName == "Year of Plenty")
+        {
             cards.push_back(new ariel::DevelopmentCard(ariel::DevelopmentCard::YearOfPlenty));
-        } else if (cardName == "Knight") {
+        }
+        else if (cardName == "Knight")
+        {
             cards.push_back(new ariel::KnightCard());
             knightCount++;
-        } else if (cardName == "Victory Point") {
+        }
+        else if (cardName == "Victory Point")
+        {
             cards.push_back(new ariel::VictoryPointCard());
-        } else {
+        }
+        else
+        {
             std::cout << "Invalid card name." << std::endl;
             return;
         }
@@ -620,7 +802,7 @@ namespace ariel
             }
             if (monopoly == false)
             {
-                std::cout<< ("You don't have any Monopoly cards.") << std::endl;
+                std::cout << ("You don't have any Monopoly cards.") << std::endl;
                 return;
             }
         }
@@ -638,7 +820,7 @@ namespace ariel
             }
             if (roadBuilding == false)
             {
-                std::cout<<("You don't have any Road Building cards.") << std::endl;
+                std::cout << ("You don't have any Road Building cards.") << std::endl;
                 return;
             }
         }
@@ -656,7 +838,7 @@ namespace ariel
             }
             if (yearOfPlenty == false)
             {
-                std::cout<<("You don't have any Year of Plenty cards.") << std::endl;
+                std::cout << ("You don't have any Year of Plenty cards.") << std::endl;
                 return;
             }
         }
@@ -674,7 +856,7 @@ namespace ariel
             }
             if (victoryPoint == false)
             {
-                std::cout<<("You don't have any Victory Point cards.") << std::endl;
+                std::cout << ("You don't have any Victory Point cards.") << std::endl;
                 return;
             }
         }
@@ -692,7 +874,7 @@ namespace ariel
             }
             if (knight == false)
             {
-                std::cout<<("You don't have any Knight cards.") << std::endl;
+                std::cout << ("You don't have any Knight cards.") << std::endl;
                 return;
             }
         }
@@ -714,6 +896,11 @@ namespace ariel
             std::cin >> type;
             if (type == "wood")
             {
+                if (other1.wood <= 0 || other2.wood <= 0)
+                {
+                    std::cout << "one of the players has no wood, try again" << std::endl;
+                    return;
+                }
                 wood++;
                 other1.wood--;
                 other2.wood--;
@@ -721,30 +908,47 @@ namespace ariel
             }
             else if (type == "ore")
             {
+                if (other1.ore <= 0 || other2.ore <= 0)
+                {
+                    std::cout << "one of the players has no ore, try again" << std::endl;
+                    return;
+                }
                 ore++;
                 other1.ore--;
                 other2.ore--;
             }
             else if (type == "brick")
             {
+                if (other1.brick <= 0 || other2.brick <= 0)
+                {
+                    std::cout << "one of the players has no brick, try again" << std::endl;
+                    return;
+                }
                 brick++;
                 other1.brick--;
                 other2.brick--;
             }
             else if (type == "wheat")
             {
+                if (other1.wheat <= 0 || other2.wheat <= 0)
+                {
+                    std::cout << "one of the players has no wheat, try again" << std::endl;
+                    return;
+                }
                 wheat++;
                 other1.wheat--;
                 other2.wheat--;
             }
             else if (type == "wool")
             {
+
                 wool++;
                 other1.wool--;
                 other2.wool--;
             }
-            else{
-                std::cout<<("Invalid resource type in used card.") << std::endl;
+            else
+            {
+                std::cout << ("Invalid resource type in used card.") << std::endl;
                 return;
             }
         }
@@ -791,7 +995,7 @@ namespace ariel
         }
         else
         {
-            std::cout<<("Invalid card type.") << std::endl;
+            std::cout << ("Invalid card type.") << std::endl;
             return;
         }
         cards.erase(cards.begin() + inedx);

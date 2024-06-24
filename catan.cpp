@@ -6,7 +6,7 @@
 
 namespace ariel
 {
-    Catan::Catan(Player &p1, Player &p2, Player &p3) : p1(p1), p2(p2), p3(p3), board()
+    Catan::Catan(Player &p1, Player &p2, Player &p3) : players({})
     {
         players.push_back(&p1);
         players.push_back(&p2);
@@ -18,11 +18,6 @@ namespace ariel
         // int random = rand() % 3;
         // std::cout << players[random]->getName() << std::endl;
         players[0]->changeTurn();
-    }
-
-    Board &Catan::getBoard()
-    {
-        return board;
     }
 
     void Catan::play(int roll, Board &board)
@@ -87,13 +82,30 @@ namespace ariel
 
     void Catan::printWinner()
     {
-        int max = players[0]->getPoints();
+        unsigned long largest=-1;
+        if(players[0]->getKnightCount()>players[1]->getKnightCount() && players[0]->getKnightCount()>players[2]->getKnightCount()){
+            largest=0;
+        }
+        if(players[1]->getKnightCount()>players[0]->getKnightCount() && players[1]->getKnightCount()>players[2]->getKnightCount()){
+            largest=1;
+        }
+        if(players[2]->getKnightCount()>players[0]->getKnightCount() && players[2]->getKnightCount()>players[1]->getKnightCount()){
+            largest=2;
+        }
+        int max=0;
+        if(largest==0)
+            max = players[0]->getPoints()+2;
+        else
+            max = players[0]->getPoints();
         Player *winner = players[0];
         for (unsigned long i = 1; i < players.size(); i++)
         {
-            if (players[i]->getPoints() > max)
+            if (players[i]->getPoints()>max)
             {
-                max = players[i]->getPoints();
+                if(largest==i)
+                    max = players[i]->getPoints()+2;
+                else
+                    max = players[i]->getPoints();
                 winner = players[i];
             }
         }

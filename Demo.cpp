@@ -38,6 +38,9 @@ void playerTurn(Player &player, Player &p1, Player &p2, Player &p3, Board &board
                 break;
             case 4:
                 {
+                    int tradeType;
+                    cout << "Trade Cards or Resources? (1 for Cards, 2 for Resources): ";
+                    cin >> tradeType;
                     int tradePartner;
                     cout << "Choose a player to trade with (1 for " << p1.getName() << ", 2 for " << p2.getName() << ", 3 for " << p3.getName() << "): ";
                     cin >> tradePartner;
@@ -47,11 +50,22 @@ void playerTurn(Player &player, Player &p1, Player &p2, Player &p3, Board &board
                         break;
                     }
                     if (tradePartner == 1)
-                        player.trade(p1);
+                        if(tradeType==1)
+                            player.tradeCards(p1);
+                        else
+                            player.tradeRescources(p1);
                     else if (tradePartner == 2)
-                        player.trade(p2);
+                        if(tradeType==1)
+                            player.tradeCards(p2);
+                        else
+                            player.tradeRescources(p2);
                     else if (tradePartner == 3)
-                        player.trade(p3);
+                        if(tradeType==1)
+                            player.tradeCards(p3);
+                        else
+                            player.tradeRescources(p3);
+                    else
+                        cout << "Invalid player choice" << endl;
                 }
                 break;
             case 5:
@@ -120,7 +134,7 @@ int main() {
     board.createBoard();
     board.displayBoard();
 
-    for(int i=0;i<1;i++)
+    for(int i=0;i<2;i++)
     {
         catan.getPlayer(i).changeTurn();
         catan.getPlayer(i).placeSettlement(board, true);
@@ -134,6 +148,22 @@ int main() {
     catan.ChooseStartingPlayer();
 
     while (true) {
+        p1.addResource("wood", 20);
+        p1.addResource("brick", 20);
+        p1.addResource("ore", 20);
+        p1.addResource("wheat", 20);
+        p1.addResource("wool", 20);
+        p2.addResource("wood", 20);
+        p2.addResource("brick", 20);
+        p2.addResource("ore", 20);
+        p2.addResource("wheat", 20);
+        p2.addResource("wool", 20);
+        p3.addResource("wood", 20);
+        p3.addResource("brick", 20);
+        p3.addResource("ore", 20);
+        p3.addResource("wheat", 20);
+        p3.addResource("wool", 20);
+
         int roll = p1.rollDice();
         cout << "The dice rolled a " << roll << endl;
         catan.play(roll, board);

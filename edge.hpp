@@ -29,6 +29,8 @@ namespace ariel {
         std::vector<Edge*> getNeighbors() const;
         int getPlayerID() const;
         std::string getColor() const;
+        Vertex* getVertex1() const;
+        Vertex* getVertex2() const;
     };
 }
 

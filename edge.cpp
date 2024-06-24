@@ -61,4 +61,12 @@ namespace ariel {
         return "\033[1;37m";
          
     }
+
+    Vertex* Edge::getVertex1() const {
+        return vertex1;
+    }
+
+    Vertex* Edge::getVertex2() const {
+        return vertex2;
+    }
 }

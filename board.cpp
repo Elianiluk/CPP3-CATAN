@@ -65,7 +65,7 @@ namespace ariel {
         board[17] = new Hexagon(6,17, "Agricultural Land");
         board[17]->setVertices(board[13]->getVertex(4), board[16]->getVertex(5), board[16]->getVertex(4), new Vertex(50), new Vertex(51), board[14]->getVertex(3));
 
-        board[18] = new Hexagon(11,19, "Pasture Land");
+        board[18] = new Hexagon(11,18, "Pasture Land");
         board[18]->setVertices(board[14]->getVertex(4), board[17]->getVertex(5), board[17]->getVertex(4), new Vertex(52), new Vertex(53), board[15]->getVertex(3));
 
         // set edges for each land

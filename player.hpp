@@ -40,7 +40,8 @@ namespace ariel
         void placeSettlement(Board &board, bool firstRound);
         void placeRoad(Board &board, bool firstRound,bool card);
         void placeCity(Board &board);
-        void trade(Player& other);
+        void tradeRescources(Player& other);
+        void tradeCards(Player& other);
         void addPoints(int p);
         int getPoints();
         void printPoints();
@@ -58,6 +59,10 @@ namespace ariel
         std::string getColor();
         void printCards();
         int numOfResource();
+        int getKnightCount();
+        void addCard(std::string card);
+        void removeCard(std::string card);
+        bool hasCard(std::string card);
     };
 } // namespace ariel
 
