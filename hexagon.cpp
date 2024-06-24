@@ -1,9 +1,11 @@
 #include "hexagon.hpp"
 
-namespace ariel {
-    Hexagon::Hexagon(int num,int numOrder, const std::string& name) : num(num),numOrder(numOrder), name(name), vertices(6, nullptr), edges(6, nullptr) {}
+namespace ariel
+{
+    Hexagon::Hexagon(int num, int numOrder, const std::string &name) : num(num), numOrder(numOrder), name(name), vertices(6, nullptr), edges(6, nullptr) {}
 
-    void Hexagon::setVertices(Vertex* v1, Vertex* v2, Vertex* v3, Vertex* v4, Vertex* v5, Vertex* v6) {
+    void Hexagon::setVertices(Vertex *v1, Vertex *v2, Vertex *v3, Vertex *v4, Vertex *v5, Vertex *v6)
+    {
         vertices[0] = v1;
         vertices[1] = v2;
         vertices[2] = v3;
@@ -19,7 +21,8 @@ namespace ariel {
         v6->addHexagon(numOrder);
     }
 
-    void Hexagon::setEdges(Edge* e1, Edge* e2, Edge* e3, Edge* e4, Edge* e5, Edge* e6) {
+    void Hexagon::setEdges(Edge *e1, Edge *e2, Edge *e3, Edge *e4, Edge *e5, Edge *e6)
+    {
         edges[0] = e1;
         edges[1] = e2;
         edges[2] = e3;
@@ -35,58 +38,83 @@ namespace ariel {
         e6->addHexagon(numOrder);
     }
 
-    Vertex* Hexagon::getVertex(int index) const {
+    Vertex *Hexagon::getVertex(int index) const
+    {
         return vertices[index];
     }
 
-    Edge* Hexagon::getEdge(int index) const {
+    Edge *Hexagon::getEdge(int index) const
+    {
         return edges[index];
     }
 
-    int Hexagon::getNum() const {
+    int Hexagon::getNum() const
+    {
         return num;
     }
 
-    std::string Hexagon::getName() const {
+    std::string Hexagon::getName() const
+    {
         return name;
     }
 
-    std::string Hexagon::getType() {
-        if (name == "Mountains") {
+    std::string Hexagon::getType()
+    {
+        if (name == "Mountains")
+        {
             return "ore";
         }
-        else if (name == "Forest") {
+        else if (name == "Forest")
+        {
             return "wood";
         }
-        else if (name == "Agricultural Land") {
+        else if (name == "Agricultural Land")
+        {
             return "wheat";
         }
-        else if (name == "Pasture Land") {
+        else if (name == "Pasture Land")
+        {
             return "wool";
         }
-        else if (name == "Hills") {
+        else if (name == "Hills")
+        {
             return "brick";
         }
-        else {
+        else
+        {
             return "-1";
         }
     }
 
-    std::string Hexagon::getLandSymbol() const {
-        if (name=="Forest") {
-        return "🌲";
-    } else if (name=="Hills") {
-        return "🧱";
-    } else if (name=="Pasture Land") {
-        return "🐑";
-    } else if (name=="Agricultural Land") {
-        return "🌾";
-    } else if (name=="Mountains") {
-        return "⛰️ ";
-    } else if (name=="Desert") {
-        return "🏜️";
-    } else {
-        return " ";
-    }
+    std::string Hexagon::getSymbol() const
+    {
+        if (name == "Forest")
+        {
+            return "🌲";
+        }
+        else if (name == "Hills")
+        {
+            return "🧱";
+        }
+        else if (name == "Pasture Land")
+        {
+            return "🐑";
+        }
+        else if (name == "Agricultural Land")
+        {
+            return "🌾";
+        }
+        else if (name == "Mountains")
+        {
+            return "⛰️ ";
+        }
+        else if (name == "Desert")
+        {
+            return "🏜️";
+        }
+        else
+        {
+            return " ";
+        }
     }
 }

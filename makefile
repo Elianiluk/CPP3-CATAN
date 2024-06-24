@@ -12,6 +12,9 @@ TARGET := catan
 # Default target
 all: $(TARGET)
 
+test: $(TARGET)
+	./$(TARGET) test
+	
 # Compile source files into object files
 %.o: %.cpp
 	$(CC) $(CFLAGS) -c $< -o $@

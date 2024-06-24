@@ -22,22 +22,28 @@ namespace ariel
 
     void Catan::play(int roll, Board &board)
     {
-        if(roll==7){
-            for(Player* p: players){
+        if (roll == 7)
+        {
+            for (Player *p : players)
+            {
                 int num = p->numOfResource();
-                if(num>7){
+                if (num > 7)
+                {
                     p->printResources();
-                    std::cout<<"Player "<<p->getName()<<" has more than 7 resources, choose half of them to discard"<<std::endl;
-                    int half = num/2;
-                    for(int i=0;i<half;i++){
+                    std::cout << "Player " << p->getName() << " has more than 7 resources, choose half of them to discard" << std::endl;
+                    int half = num / 2;
+                    for (int i = 0; i < half; i++)
+                    {
                         std::string type;
-                        std::cout<<"Choose a resource to discard: ";
-                        std::cin>>type;
-                        if(p->resourcesNameContains(type)){
-                            p->addResource(type,-1);
+                        std::cout << "Choose a resource to discard: ";
+                        std::cin >> type;
+                        if (p->resourcesNameContains(type))
+                        {
+                            p->addResource(type, -1);
                         }
-                        else{
-                            std::cout<<"You don't have this resource"<<std::endl;
+                        else
+                        {
+                            std::cout << "You don't have this resource" << std::endl;
                             i--;
                         }
                     }
@@ -80,30 +86,33 @@ namespace ariel
         return *players[i];
     }
 
-    void Catan::printWinner()
+    bool Catan::printWinner()
     {
-        unsigned long largest=-1;
-        if(players[0]->getKnightCount()>players[1]->getKnightCount() && players[0]->getKnightCount()>players[2]->getKnightCount()){
-            largest=0;
+        unsigned long largest = -1;
+        if (players[0]->getKnightCount() > players[1]->getKnightCount() && players[0]->getKnightCount() > players[2]->getKnightCount())
+        {
+            largest = 0;
         }
-        if(players[1]->getKnightCount()>players[0]->getKnightCount() && players[1]->getKnightCount()>players[2]->getKnightCount()){
-            largest=1;
+        if (players[1]->getKnightCount() > players[0]->getKnightCount() && players[1]->getKnightCount() > players[2]->getKnightCount())
+        {
+            largest = 1;
         }
-        if(players[2]->getKnightCount()>players[0]->getKnightCount() && players[2]->getKnightCount()>players[1]->getKnightCount()){
-            largest=2;
+        if (players[2]->getKnightCount() > players[0]->getKnightCount() && players[2]->getKnightCount() > players[1]->getKnightCount())
+        {
+            largest = 2;
         }
-        int max=0;
-        if(largest==0)
-            max = players[0]->getPoints()+2;
+        int max = 0;
+        if (largest == 0)
+            max = players[0]->getPoints() + 2;
         else
             max = players[0]->getPoints();
         Player *winner = players[0];
         for (unsigned long i = 1; i < players.size(); i++)
         {
-            if (players[i]->getPoints()>max)
+            if (players[i]->getPoints() > max)
             {
-                if(largest==i)
-                    max = players[i]->getPoints()+2;
+                if (largest == i)
+                    max = players[i]->getPoints() + 2;
                 else
                     max = players[i]->getPoints();
                 winner = players[i];
@@ -112,8 +121,9 @@ namespace ariel
         if (max < 10)
         {
             std::cout << "No winner yet." << std::endl;
-            return;
+            return false;
         }
         std::cout << winner->getName() << " is the winner!" << std::endl;
+        return true;
     }
 }

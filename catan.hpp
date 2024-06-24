@@ -12,7 +12,7 @@ public:
     Catan(Player& p1, Player& p2, Player& p3);
     void ChooseStartingPlayer();
     void play(int roll,Board &board);
-    void printWinner();
+    bool printWinner();
     Player& getPlayer(int i);
 
 private:

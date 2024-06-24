@@ -63,6 +63,7 @@ namespace ariel
         void addCard(std::string card);
         void removeCard(std::string card);
         bool hasCard(std::string card);
+        int getResource(std::string type);
     };
 } // namespace ariel
 

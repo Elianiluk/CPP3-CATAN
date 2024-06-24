@@ -18,9 +18,9 @@ namespace ariel
     {
         if (playerID == 0)
             return "\033[1;31m";
-        if (playerID == 1)
+        else if (playerID == 1)
             return "\033[1;34m";
-        if (playerID == 2)
+        else if (playerID == 2)
             return "\033[1;32m";
         return "\033[1;37m";
     }
@@ -173,6 +173,7 @@ namespace ariel
             std::cout << ("It's not your turn.") << std::endl;
             return;
         }
+        std::cout << "HexagonNum:" << HexagonNum << "edgeID:" << edgeID << std::endl;
         if (edgeID < 0 || edgeID > 5)
         {
             std::cout << ("Invalid edge ID.") << std::endl;
@@ -555,31 +556,30 @@ namespace ariel
         std::cout << name << ", enter the name of the card you want to give:";
         std::cin >> card1T;
         // std::getline(std::cin, card1);
-        if(card1T=="Monopoly")
-            card1="Monopoly";
-        if(card1T=="Road")
-            card1="Road Building";
-        if(card1T=="Year")
-            card1="Year of Plenty";
-        if(card1T=="Knight")
-            card1="Knight";
-        if(card1T=="Victory")
-            card1="Victory Point";
-        
+        if (card1T == "Monopoly")
+            card1 = "Monopoly";
+        if (card1T == "Road")
+            card1 = "Road Building";
+        if (card1T == "Year")
+            card1 = "Year of Plenty";
+        if (card1T == "Knight")
+            card1 = "Knight";
+        if (card1T == "Victory")
+            card1 = "Victory Point";
 
         std::cout << name << ", enter the name of the card you want to get:" << std::endl;
         std::cin >> card2T;
         // std::getline(std::cin, card2);
-        if(card2T=="Monopoly")
-            card2="Monopoly";
-        if(card2T=="Road")
-            card2="Road Building";
-        if(card2T=="Year")
-            card2="Year of Plenty";
-        if(card2T=="Knight")
-            card2="Knight";
-        if(card2T=="Victory")
-            card2="Victory Point";
+        if (card2T == "Monopoly")
+            card2 = "Monopoly";
+        if (card2T == "Road")
+            card2 = "Road Building";
+        if (card2T == "Year")
+            card2 = "Year of Plenty";
+        if (card2T == "Knight")
+            card2 = "Knight";
+        if (card2T == "Victory")
+            card2 = "Victory Point";
 
         if (!hasCard(card1))
         {
@@ -630,8 +630,10 @@ namespace ariel
             cards.push_back(new ariel::DevelopmentCard(ariel::DevelopmentCard::RoadBuilding));
         else if (card == "Year of Plenty")
             cards.push_back(new ariel::DevelopmentCard(ariel::DevelopmentCard::YearOfPlenty));
-        else if (card == "Knight")
+        else if (card == "Knight"){
             cards.push_back(new ariel::KnightCard());
+            knightCount++;
+        }
         else if (card == "Victory Point")
             cards.push_back(new ariel::VictoryPointCard());
         else
@@ -993,7 +995,12 @@ namespace ariel
             std::cout << name << " played a Victory Point card." << std::endl;
             addPoints(1);
         }
-        else
+        else if(cardType == "Knight")
+        {
+            throw std::invalid_argument("cant plat knight card");
+            return;
+        }
+        else    
         {
             std::cout << ("Invalid card type.") << std::endl;
             return;
@@ -1058,5 +1065,30 @@ namespace ariel
     int Player::numOfResource()
     {
         return wood + ore + brick + wheat + wool;
+    }
+
+    int Player::getResource(std::string type)
+    {
+        if (type == "wood")
+        {
+            return wood;
+        }
+        if (type == "ore")
+        {
+            return ore;
+        }
+        if (type == "brick")
+        {
+            return brick;
+        }
+        if (type == "wheat")
+        {
+            return wheat;
+        }
+        if (type == "wool")
+        {
+            return wool;
+        }
+        return 0;
     }
 } // namespace ariel

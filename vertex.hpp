@@ -31,7 +31,7 @@ namespace ariel {
         std::vector<int> getHexagons() const;
         std::vector<Vertex*> getNeighbors() const;
         int getPlayerID() const;
-        std::string getConstructionSymbol() const;
+        std::string getVertexKind() const;
     };
 }
 
