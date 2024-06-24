@@ -2,7 +2,13 @@
 
 namespace ariel {
     // DevelopmentCard Implementation
-    DevelopmentCard::DevelopmentCard(DevType type) : Card(0, "Development"), devType(type) {}
+    DevelopmentCard::DevelopmentCard(DevType type)
+    : Card(0, // someValue
+           (type == Monopoly) ? "Monopoly" :
+           (type == RoadBuilding) ? "Road Building" :
+           (type == YearOfPlenty) ? "Year of Plenty" : "Unknown"),
+      devType(type) {
+}
 
     DevelopmentCard::DevType DevelopmentCard::getDevType() const {
         return devType;
@@ -28,6 +34,10 @@ namespace ariel {
         return count;
     }
 
+    std::string KnightCard::getDevTypeString() const {
+        return "Knight";
+    }
+
     // VictoryPointCard Implementation
     int VictoryPointCard::count = 0;
 
@@ -37,5 +47,9 @@ namespace ariel {
 
     int VictoryPointCard::getCount() {
         return count;
+    }
+
+    std::string VictoryPointCard::getDevTypeString() const {
+        return "Victory Point";
     }
 }

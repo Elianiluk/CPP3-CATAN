@@ -24,6 +24,7 @@ namespace ariel {
     public:
         KnightCard();
         static int getCount();
+        std::string getDevTypeString() const;
     };
 
     class VictoryPointCard : public Card {
@@ -33,6 +34,7 @@ namespace ariel {
     public:
         VictoryPointCard();
         static int getCount();
+        std::string getDevTypeString() const;
     };
 }
 

@@ -7,6 +7,9 @@
 #include "board.hpp"
 #include "developmentCard.hpp"
 #include <map>
+#include <chrono>
+#include <random>
+#include <algorithm>
 
 namespace ariel
 {
@@ -24,7 +27,7 @@ namespace ariel
         int knightCount;
         std::vector<int> resourcesNum;
         std::vector<std::string> resourcesName;
-        std::vector<Card> cards;
+        std::vector<Card*> cards;
         int settelmentCount;
         int cityCount;
         int roadCount;
@@ -53,6 +56,8 @@ namespace ariel
         int getPlayerID();
         bool getTurn();
         std::string getColor();
+        void printCards();
+        int numOfResource();
     };
 } // namespace ariel
 

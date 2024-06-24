@@ -21,6 +21,9 @@ void playerTurn(Player &player, Player &p1, Player &p2, Player &p3, Board &board
         cout << "6 - Use Card" << endl;
         cout << "7 - End Turn" << endl;
         cout << "8-  show resources"<<endl;
+        cout << "9-  show points"<<endl;
+        cout << "10- show cards"<<endl;
+        cout << "11- display board"<<endl;
         cin >> choice;
 
         switch (choice) {
@@ -56,14 +59,10 @@ void playerTurn(Player &player, Player &p1, Player &p2, Player &p3, Board &board
                 break;
             case 6:
                 {
-                    string card, type, type2;
+                    std::string card;
                     int targetPlayer1, targetPlayer2;
                     cout << "Enter card to use: ";
                     cin >> card;
-                    cout << "Enter type: ";
-                    cin >> type;
-                    cout << "Enter type2 (if applicable, else type 'none'): ";
-                    cin >> type2;
                     cout << "Enter first target player (1 for " << p1.getName() << ", 2 for " << p2.getName() << ", 3 for " << p3.getName() << "): ";
                     cin >> targetPlayer1;
                     cout << "Enter second target player (if applicable, else type 'none'): ";
@@ -85,6 +84,18 @@ void playerTurn(Player &player, Player &p1, Player &p2, Player &p3, Board &board
             }
             case 8:
                 player.printResources();
+                break;
+            case 9:{
+                std::cout<<p1.getName()<<"'s points: "<<p1.getPoints()<<std::endl;
+                std::cout<<p2.getName()<<"'s points: "<<p2.getPoints()<<std::endl;
+                std::cout<<p3.getName()<<"'s points: "<<p3.getPoints()<<std::endl;
+                break;
+            }
+            case 10:
+                player.printCards();
+                break;
+            case 11:
+                board.displayBoard();
                 break;
             default:
                 cout << "Invalid choice. Try again." << endl;

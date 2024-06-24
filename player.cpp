@@ -526,71 +526,55 @@ namespace ariel
 
     int Player::rollDice()
     {
-        int dice = rand() % 6 + 1 + rand() % 6 + 1;
-        std::cout << dice << std::endl;
-        return dice;
+        std::vector<int> dices = {2, 3, 4, 5, 6,7,8,9,10,11,12};
+        unsigned seed = std::chrono::system_clock::now().time_since_epoch().count();
+        std::shuffle(dices.begin(), dices.end(), std::default_random_engine(seed));
+        std::cout << dices[0] << std::endl;
+        return dices[0];
         // return 12;
     }
 
-    void Player::buyCard()
-    {
-        if (turn == false)
-        {
-            std::cout << ("It's not your turn.") << std::endl;
+    void Player::buyCard() {
+        if (turn == false) {
+            std::cout << "It's not your turn." << std::endl;
             return;
         }
 
         // Cost of a development card: 1 wheat, 1 ore, 1 wool
-        if (wheat < 1 || ore < 1)
-        {
-            std::cout << ("You don't have enough resources to buy a development card.") << std::endl;
+        if (wheat < 1 || ore < 1 || wool < 1) {
+            std::cout << "You don't have enough resources to buy a development card." << std::endl;
             return;
         }
 
         // Randomly choose a card
-        std::string names[5] = {"Monopoly", "Road Building", "Year of Plenty", "Knight", "Victory Point"};
-        int randIndex = rand() % 5;
-        std::string cardName = names[randIndex]; // cardName = names[rand() % 5
+        std::vector<std::string> names = {"Monopoly", "Road Building", "Year of Plenty", "Knight", "Victory Point"};
+        unsigned seed = std::chrono::system_clock::now().time_since_epoch().count();
+        std::shuffle(names.begin(), names.end(), std::default_random_engine(seed));
+        std::shuffle(names.begin(), names.end(), std::default_random_engine(seed));
+
+        // int randIndex = rand() % 5;
+        // std::string cardName = names[randIndex];
+        std::string cardName = names[0];
 
         // Deduct the resources
         wheat -= 1;
         ore -= 1;
         wool -= 1;
 
-        // Create the card based on the cardName
-        if (cardName == "Monopoly")
-        {
-            DevelopmentCard card(DevelopmentCard::Monopoly);
-            cards.push_back(card);
-        }
-        else if (cardName == "Road Building")
-        {
-            DevelopmentCard card(DevelopmentCard::RoadBuilding);
-            cards.push_back(card);
-        }
-        else if (cardName == "Year of Plenty")
-        {
-            DevelopmentCard card(DevelopmentCard::YearOfPlenty);
-            cards.push_back(card);
-        }
-        else if (cardName == "Knight")
-        {
-            if (KnightCard::getCount() >= 3)
-            {
-                throw std::runtime_error("Cannot create more than 3 Knight Cards.");
-            }
-            KnightCard card;
+        // Create the card based on the cardName and add to the player's cards
+        if (cardName == "Monopoly") {
+            cards.push_back(new ariel::DevelopmentCard(ariel::DevelopmentCard::Monopoly));
+        } else if (cardName == "Road Building") {
+            cards.push_back(new ariel::DevelopmentCard(ariel::DevelopmentCard::RoadBuilding));
+        } else if (cardName == "Year of Plenty") {
+            cards.push_back(new ariel::DevelopmentCard(ariel::DevelopmentCard::YearOfPlenty));
+        } else if (cardName == "Knight") {
+            cards.push_back(new ariel::KnightCard());
             knightCount++;
-            cards.push_back(card);
-        }
-        else if (cardName == "Victory Poines")
-        {
-            VictoryPointCard card;
-            cards.push_back(card);
-        }
-        else
-        {
-            std::cout << ("Invalid card name.") << std::endl;
+        } else if (cardName == "Victory Point") {
+            cards.push_back(new ariel::VictoryPointCard());
+        } else {
+            std::cout << "Invalid card name." << std::endl;
             return;
         }
 
@@ -611,7 +595,7 @@ namespace ariel
             return;
         }
 
-        if (cardType != "Monopoly" && cardType != "Road Building" && cardType != "Year of Plenty" && cardType != "Knight" && cardType != "Victory Point")
+        if (cardType != "Monopoly" && cardType != "Road" && cardType != "Year" && cardType != "Knight" && cardType != "Victory")
         {
             std::cout << ("Invalid card type.") << std::endl;
             return;
@@ -628,7 +612,7 @@ namespace ariel
             bool monopoly = false;
             for (unsigned long i = 0; i < cards.size(); i++)
             {
-                if (cards[i].getType() == "Monopoly")
+                if (cards[i]->getType() == "Monopoly")
                 {
                     monopoly = true;
                     break;
@@ -641,12 +625,12 @@ namespace ariel
             }
         }
 
-        if (cardType == "Road Building")
+        if (cardType == "Road")
         {
             bool roadBuilding = false;
             for (unsigned long i = 0; i < cards.size(); i++)
             {
-                if (cards[i].getType() == "Road Building")
+                if (cards[i]->getType() == "Road Building")
                 {
                     roadBuilding = true;
                     break;
@@ -659,12 +643,12 @@ namespace ariel
             }
         }
 
-        if (cardType == "Year of Plenty")
+        if (cardType == "Year")
         {
             bool yearOfPlenty = false;
             for (unsigned long i = 0; i < cards.size(); i++)
             {
-                if (cards[i].getType() == "Year of Plenty")
+                if (cards[i]->getType() == "Year of Plenty")
                 {
                     yearOfPlenty = true;
                     break;
@@ -677,12 +661,12 @@ namespace ariel
             }
         }
 
-        if (cardType == "Victory Point")
+        if (cardType == "Victory")
         {
             bool victoryPoint = false;
             for (unsigned long i = 0; i < cards.size(); i++)
             {
-                if (cards[i].getType() == "Victory Point")
+                if (cards[i]->getType() == "Victory Point")
                 {
                     victoryPoint = true;
                     break;
@@ -700,7 +684,7 @@ namespace ariel
             bool knight = false;
             for (unsigned long i = 0; i < cards.size(); i++)
             {
-                if (cards[i].getType() == "Knight")
+                if (cards[i]->getType() == "Knight")
                 {
                     knight = true;
                     break;
@@ -716,7 +700,7 @@ namespace ariel
         int inedx = 0;
         for (unsigned long i = 0; i < cards.size(); i++)
         {
-            if (cards[i].getType() == cardType)
+            if (cards[i]->getType() == cardType)
             {
                 inedx = i;
                 break;
@@ -725,34 +709,35 @@ namespace ariel
 
         if (cardType == "Monopoly")
         {
-            std::cout << name << " played a Monopoly card. choose card" << std::endl;
             std::string type;
+            std::cout << name << " played a Monopoly card. choose resource" << std::endl;
             std::cin >> type;
             if (type == "wood")
             {
                 wood++;
                 other1.wood--;
                 other2.wood--;
+                std::cout << "wood added to " << name << "and was taken of from the others" << std::endl;
             }
-            if (type == "ore")
+            else if (type == "ore")
             {
                 ore++;
                 other1.ore--;
                 other2.ore--;
             }
-            if (type == "brick")
+            else if (type == "brick")
             {
                 brick++;
                 other1.brick--;
                 other2.brick--;
             }
-            if (type == "wheat")
+            else if (type == "wheat")
             {
                 wheat++;
                 other1.wheat--;
                 other2.wheat--;
             }
-            if (type == "wool")
+            else if (type == "wool")
             {
                 wool++;
                 other1.wool--;
@@ -763,15 +748,16 @@ namespace ariel
                 return;
             }
         }
-        else if (cardType == "Road Building")
+        else if (cardType == "Road")
         {
             std::cout << name << " played a Road Building card." << std::endl;
             this->placeRoad(board, false, true);
             this->placeRoad(board, false, true);
         }
-        else if (cardType == "Year of Plenty")
+        else if (cardType == "Year")
         {
             std::cout << name << " played a Year of Plenty card." << std::endl;
+            std::cout << "Choose two resources to add: ";
             std::string type2, type;
             std::cin >> type2;
             std::cin >> type;
@@ -798,7 +784,7 @@ namespace ariel
             // } else if (cardType == "Knight") {
             //     std::cout << name << " played a Knight card." << std::endl;
         }
-        else if (cardType == "Victory Point")
+        else if (cardType == "Victory")
         {
             std::cout << name << " played a Victory Point card." << std::endl;
             addPoints(1);
@@ -854,5 +840,19 @@ namespace ariel
     bool Player::getTurn()
     {
         return turn;
+    }
+
+    void Player::printCards()
+    {
+        std::cout << "Cards for " << name << ":" << std::endl;
+        for (unsigned long i = 0; i < cards.size(); i++)
+        {
+            std::cout << cards[i]->getType() << std::endl;
+        }
+    }
+
+    int Player::numOfResource()
+    {
+        return wood + ore + brick + wheat + wool;
     }
 } // namespace ariel

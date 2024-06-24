@@ -27,6 +27,28 @@ namespace ariel
 
     void Catan::play(int roll, Board &board)
     {
+        if(roll==7){
+            for(Player* p: players){
+                int num = p->numOfResource();
+                if(num>7){
+                    p->printResources();
+                    std::cout<<"Player "<<p->getName()<<" has more than 7 resources, choose half of them to discard"<<std::endl;
+                    int half = num/2;
+                    for(int i=0;i<half;i++){
+                        std::string type;
+                        std::cout<<"Choose a resource to discard: ";
+                        std::cin>>type;
+                        if(p->resourcesNameContains(type)){
+                            p->addResource(type,-1);
+                        }
+                        else{
+                            std::cout<<"You don't have this resource"<<std::endl;
+                            i--;
+                        }
+                    }
+                }
+            }
+        }
         std::vector<Hexagon *> hexas = board.getRelevantHexagons(roll);
         for (Hexagon *hex : hexas)
         {
