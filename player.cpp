@@ -903,7 +903,7 @@ namespace ariel
                     std::cout << "one of the players has no wood, try again" << std::endl;
                     return;
                 }
-                wood++;
+                wood+=2;
                 other1.wood--;
                 other2.wood--;
                 std::cout << "wood added to " << name << "and was taken of from the others" << std::endl;

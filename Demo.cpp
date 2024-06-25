@@ -124,7 +124,7 @@ void playerTurn(Player &player, Player &p1, Player &p2, Player &p3, Board &board
     }
 }
 
-int main1()
+int main()
 {
     // std::string name1, name2, name3;
     // std::cout << "Enter the name of the first player: ";
