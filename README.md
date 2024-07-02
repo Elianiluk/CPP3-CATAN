@@ -20,3 +20,30 @@ In the demo file, a regular game run is executed. The game is played with 3 peop
 Usage
 
 To run the game, compile and execute the demo file. The game supports full gameplay with 3 players, allowing you to build settlements, roads, and cities, trade resources, buy and use development cards, and aim to reach 10 victory points to win.
+Compiling and Running
+
+To compile and run the project, make sure to include all necessary source files and dependencies. The provided Makefile includes the necessary setup for compiling the project with SFML for graphical visualization.
+Game Play
+
+    Each player chooses 2 initial settlements and 2 roads.
+    Players receive starting resources based on their initial settlements.
+    Players take turns rolling 2 dice and receiving resources based on the roll.
+    On their turn, players can trade resources, build roads, settlements, or cities, or buy and use development cards.
+    The game ends when a player reaches 10 victory points.
+
+Additional Information About Catan
+
+Catan, also known as The Settlers of Catan, is a multiplayer board game designed by Klaus Teuber. It was first published in 1995 in Germany. Players assume the roles of settlers, each attempting to build and develop holdings while trading and acquiring resources. The game is known for its complex strategy, interaction between players, and a mix of luck and skill. Players earn points as they build settlements, cities, and roads, and the first player to reach a set number of points, usually 10, wins the game.
+Key Concepts:
+
+    Resources: There are five types of resources in Catan: wood, brick, wheat, ore, and sheep. Players collect these resources to build and expand their settlements and cities.
+    Settlements and Cities: Settlements and cities are the primary ways players earn victory points. Settlements are worth 1 point, and cities are worth 2 points.
+    Development Cards: These cards can be purchased and provide various bonuses and abilities that can help players in the game.
+
+Strategy Tips:
+
+    Diversify Resources: Try to have access to all types of resources to ensure you can build whatever you need.
+    Trade Wisely: Trading with other players is a key component of the game. Always try to make trades that benefit you more than your opponent.
+    Expand Quickly: Establishing settlements and cities early can help you control key areas of the board and secure more resources.
+
+Enjoy playing Catan and may the best settler win!
