@@ -1,6 +1,10 @@
 #ifndef KINDCARD_HPP
 #define KINDCARD_HPP
 
+/* author: elian iluk
+email: elian10119@gmail.com
+id: 214787483*/
+
 #include "card.hpp"
 
 namespace ariel {

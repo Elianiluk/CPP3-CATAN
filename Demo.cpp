@@ -6,6 +6,10 @@
 #include "board.hpp"
 #include "card.hpp"
 
+/* author: elian iluk
+email: elian10119@gmail.com
+id: 214787483*/
+
 using namespace std;
 using namespace ariel;
 
@@ -126,23 +130,23 @@ void playerTurn(Player &player, Player &p1, Player &p2, Player &p3, Board &board
 
 int main()
 {
-    // std::string name1, name2, name3;
-    // std::cout << "Enter the name of the first player: ";
-    // std::cin >> name1;
-    // std::cout << "Enter the name of the second player: ";
-    // std::cin >> name2;
-    // std::cout << "Enter the name of the third player: ";
-    // std::cin >> name3;
-    Player p1("Amit", 0);
-    Player p2("Yossi", 1);
-    Player p3("Dana", 2);
+    std::string name1, name2, name3;
+    std::cout << "Enter the name of the first player: ";
+    std::cin >> name1;
+    std::cout << "Enter the name of the second player: ";
+    std::cin >> name2;
+    std::cout << "Enter the name of the third player: ";
+    std::cin >> name3;
+    Player p1(name1, 0);
+    Player p2(name2, 1);
+    Player p3(name3, 2);
     Catan catan(p1, p2, p3);
 
     Board board;
     board.createBoard();
     board.displayBoard();
 
-    for (int i = 0; i < 2; i++)
+    for (int i = 0; i < 3; i++)
     {
         catan.getPlayer(i).changeTurn();
         catan.getPlayer(i).placeSettlement(board, true);
@@ -157,22 +161,6 @@ int main()
 
     while (true)
     {
-        p1.addResource("wood", 20);
-        p1.addResource("brick", 20);
-        p1.addResource("ore", 20);
-        p1.addResource("wheat", 20);
-        p1.addResource("wool", 20);
-        p2.addResource("wood", 20);
-        p2.addResource("brick", 20);
-        p2.addResource("ore", 20);
-        p2.addResource("wheat", 20);
-        p2.addResource("wool", 20);
-        p3.addResource("wood", 20);
-        p3.addResource("brick", 20);
-        p3.addResource("ore", 20);
-        p3.addResource("wheat", 20);
-        p3.addResource("wool", 20);
-
         int roll = p1.rollDice();
         cout << "The dice rolled a " << roll << endl;
         catan.play(roll, board);

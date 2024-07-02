@@ -1,5 +1,9 @@
 #include "developmentCard.hpp"
 
+/* author: elian iluk
+email: elian10119@gmail.com
+id: 214787483*/
+
 namespace ariel
 {
     // DevelopmentCard Implementation

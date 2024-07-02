@@ -1,5 +1,9 @@
 #include "player.hpp"
 
+/* author: elian iluk
+email: elian10119@gmail.com
+id: 214787483*/
+
 namespace ariel
 {
     Player::Player(std::string name, int playerID)

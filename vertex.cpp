@@ -1,5 +1,9 @@
 #include "vertex.hpp"
 
+/* author: elian iluk
+email: elian10119@gmail.com
+id: 214787483*/
+
 namespace ariel
 {
     Vertex::Vertex(int num) : num(num), playerID(-1), settelment(false), city(false), neighbors(3, nullptr), incidentEdges(3, nullptr) {}

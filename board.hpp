@@ -7,6 +7,10 @@
 #include <string>
 #include <iostream>
 
+/* author: elian iluk
+email: elian10119@gmail.com
+id: 214787483*/
+
 namespace ariel {
     class Board {
     public:

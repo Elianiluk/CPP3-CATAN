@@ -5,6 +5,10 @@
 #include "player.hpp"
 #include "board.hpp"
 
+/* author: elian iluk
+email: elian10119@gmail.com
+id: 214787483*/
+
 namespace ariel {
 
 class Catan {

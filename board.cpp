@@ -1,5 +1,9 @@
 #include "board.hpp"
 
+/* author: elian iluk
+email: elian10119@gmail.com
+id: 214787483*/
+
 namespace ariel
 {
         Board::Board() : board(19, nullptr) {}

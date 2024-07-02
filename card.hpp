@@ -2,6 +2,10 @@
 #ifndef CARD_HPP
 #define CARD_HPP
 
+/* author: elian iluk
+email: elian10119@gmail.com
+id: 214787483*/
+
 
 #include <iostream>
 #include <stdexcept>

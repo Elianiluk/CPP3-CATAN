@@ -11,6 +11,10 @@ using namespace ariel;
 #include <sstream>
 #include "doctest.hpp"
 
+/* author: elian iluk
+email: elian10119@gmail.com
+id: 214787483*/
+
 std::streambuf *orig = std::cout.rdbuf(); // save original buffer
 
 void suppressOutput()

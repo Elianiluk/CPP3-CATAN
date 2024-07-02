@@ -4,6 +4,10 @@
 #include <cstdlib>
 #include "catan.hpp"
 
+/* author: elian iluk
+email: elian10119@gmail.com
+id: 214787483*/
+
 namespace ariel
 {
     Catan::Catan(Player &p1, Player &p2, Player &p3) : players({})

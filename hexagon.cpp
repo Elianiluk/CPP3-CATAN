@@ -1,5 +1,9 @@
 #include "hexagon.hpp"
 
+/* author: elian iluk
+email: elian10119@gmail.com
+id: 214787483*/
+
 namespace ariel
 {
     Hexagon::Hexagon(int num, int numOrder, const std::string &name) : num(num), numOrder(numOrder), name(name), vertices(6, nullptr), edges(6, nullptr) {}

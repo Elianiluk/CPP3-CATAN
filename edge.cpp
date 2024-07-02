@@ -1,5 +1,9 @@
 #include "edge.hpp"
 
+/* author: elian iluk
+email: elian10119@gmail.com
+id: 214787483*/
+
 namespace ariel
 {
     Edge::Edge(int num) : num(num), vertex1(nullptr), vertex2(nullptr), neighbors(4, nullptr), road(false), hexagons({}), playerID(-1) {}
