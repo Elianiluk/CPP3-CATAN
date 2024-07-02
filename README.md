@@ -1,16 +1,35 @@
 # Catan-Ex3
 
 In this project, I implemented the game of Catan. The game board contains 19 hexagons, each of which holds a resource that players can acquire if they have a settlement or city adjacent to it. The game begins with each player choosing 2 initial settlements and 2 roads, and receiving starting resources as a result of this initial selection. Then, each player takes turns rolling 2 dice, and according to the dice roll, players receive additional resources. The player whose turn it is can trade cards or resources with other players, build roads, settlements, or cities, or buy and use development cards. The game ends when a player reaches 10 victory points, which are accumulated based on the number of cities and settlements each player has, in addition to the number of victory cards they hold.
+## Project Structure
+- `main.cpp`: The entry point of the application.
+- `player.hpp` / `player.cpp`: Classes for player management.
+- `board.hpp` / `board.cpp`: Classes for board management, including hexagons, edges, and vertices.
+- `card.hpp` / `card.cpp / developmentCard.cpp / developmentCard.hpp`: Classes for the various cards in the game (Development cards, Knight cards, Victory point cards).
+- `catan.hpp` / `catan.cpp`: The main game logic and rules.
+- `vertex / edge / hexagon` : The classes for building the board, the board is represented by 19 hexagons, each built from 6 vertices and 6 edges
+
+
 ## Classes and Files
 ### Player Class
 
 This class handles all aspects of gameplay from the player's side. It includes functions for trading between players, building settlements, roads, or cities, buying or using development cards, and more "basic" functions like printing the number of resources or cards a player has.
+- Key methods:
+  - `placeRoad(Board &board, bool param1, bool param2)`: Place a road on the board.
+  - `buyCard()`: Buy a development card.
+  - `tradeResources(Player &other)`: Trade resources with another player.
 ### Board Class
 
 This class contains a vector of hexagons, each representing a tile on the game board that holds a resource provided to players during gameplay. This class is responsible for defining and constructing the board, including creating vertices, edges, and hexagons, and assigning the necessary variables to each (e.g., neighboring vertices, neighboring edges, which vertices each edge and hexagon contain, etc.). Additionally, it includes a function to print the game board.
+- Key methods:
+  - `displayBoard()`: Print the current state of the board.
+  - `createBoard()` : create the board, initialiize the hexagons, vertices and edges
 ### Catan Class
 
 This class is responsible for rolling the dice, determining the starting player, and executing the gameplay.
+- Key methods:
+  - `chooseStartingPlayer()`: Choose the starting player.
+  - `play(int roll, Board& board)` : play one round according to the results of the dices
 ### Card and Development Card Classes
 
 Here, we implement inheritance by creating a general card class, and each specific type of card inherits from the general card class, creating a new card of its unique type. When a specific card is played, the player receives the bonus that the card provides.
